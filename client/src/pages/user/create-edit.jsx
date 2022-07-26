@@ -22,6 +22,9 @@ import UploadFile from "@/components/upload";
 import { departmentAtom } from "@/_state";
 import { UserOutlined, UploadOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { districts } from "../../utils/district";
+import { wards } from "../../utils/wards";
+import { provinces } from "../../utils/provinces";
 
 const CreateEditUser = ({}) => {
     const userActions = useUserActions();
@@ -38,6 +41,29 @@ const CreateEditUser = ({}) => {
     });
     const departments = useRecoilValue(departmentAtom);
     const [department, setDepartment] = useState(departments[0]?.name);
+
+    const [provincesFilter, setProvinceFilter] = useState(provinces);
+    const [districtsFilter, setDistrictFilter] = useState(districts);
+    const [wardsFilter, setWardFilter] = useState(wards);
+
+    const [province, setProvince] = useState(null);
+    const [district, setDistrict] = useState(null);
+    const [ward, setWard] = useState(null);
+
+    useEffect(() => {
+        if(province) {
+            setDistrictFilter(districts.filter(district => district.parent_code === province))
+        }
+    }, [province])
+
+    useEffect(() => {   
+        if(district) {
+            setWardFilter(wards.filter(ward => ward.parent_code === district))
+        }
+    }, [district])
+
+
+
 
 
     const loadDataDepartment= async () => {
@@ -76,6 +102,7 @@ const CreateEditUser = ({}) => {
             setSaveLoading(true);
             if (isEdit) {
                 await userActions.update(id, {
+                    province,
                     ...values,
                     ...model,
                 });
@@ -243,6 +270,96 @@ const CreateEditUser = ({}) => {
                                                 {departments.items.map((item) => (
                                                 <Option key={item.id} value={item.id}>
                                                     {item.name}
+                                                </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+
+
+                                        <Form.Item
+                                            name="provinceId"
+                                            label="Tỉnh/TP"
+                                            rules={[
+                                                {
+                                                required: true,
+                                                message: "Vui lòng nhập tên danh mục",
+                                                },
+                                            ]}
+                                            >
+                                            <Select
+                                                // name="provinceId"
+                                                defaultValue={null}
+                                                showSearch
+                                                style={{ width: 200 }}
+                                                optionFilterProp="children"
+                                                onChange={(value) => {
+                                                    setProvince(value)
+                                                }}
+                                                filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {provincesFilter.map((item) => (
+                                                <Option key={item.code} value={item.code}>
+                                                    {item.name_with_type}
+                                                </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            // name="districtId"
+                                            label="Quận/Huyện"
+                                            rules={[
+                                                {
+                                                required: true,
+                                                message: "Vui lòng nhập tên danh mục",
+                                                },
+                                            ]}
+                                            >
+                                            <Select
+                                                name="districtId"
+                                                defaultValue={null}
+                                                showSearch
+                                                style={{ width: 200 }}
+                                                optionFilterProp="children"
+                                                onChange={(value) => setDistrict(value)}
+                                                filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {districtsFilter.map((item) => (
+                                                <Option key={item.code} value={item.code}>
+                                                    {item.name_with_type}
+                                                </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            name="wardId"
+                                            label="Xã/Phường"
+                                            rules={[
+                                                {
+                                                required: true,
+                                                message: "Vui lòng nhập tên danh mục",
+                                                },
+                                            ]}
+                                            >
+                                            <Select
+                                                name="wardId"
+                                                defaultValue={null}
+                                                showSearch
+                                                style={{ width: 200 }}
+                                                optionFilterProp="children"
+                                                onChange={(value) => setWard(value)}
+                                                filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {wardsFilter.map((item) => (
+                                                <Option key={item.code} value={item.code}>
+                                                    {item.name_with_type}
                                                 </Option>
                                                 ))}
                                             </Select>
