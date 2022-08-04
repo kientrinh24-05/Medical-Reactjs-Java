@@ -112,14 +112,6 @@ const PatientPage = ({ ...props }) => {
                 extra={
                     !canCreate && (
                         <>
-                             <Button
-                            onClick={() => navigate("/patient/create")}
-                            size="large"
-                            className="bg-green-500 text-white"
-                        >
-                            Thanh toán
-                        </Button>
-
                         <Button
                             onClick={() => navigate("/patient/create")}
                             size="large"
@@ -128,9 +120,6 @@ const PatientPage = ({ ...props }) => {
                             Thêm bệnh nhân
                         </Button>
                         </>
-                       
-
-                        
                     )
                     
 

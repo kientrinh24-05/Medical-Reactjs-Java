@@ -10,13 +10,12 @@ import {
   message,
   Spin,
   Select,
-  InputNumber,
   Switch
 } from "antd";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { usePrugsActions } from "@/_actions";
+import { useDepartmentActions } from "@/_actions";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userCan } from "@/_state";
@@ -30,60 +29,45 @@ const CreateRole = ({ }) => {
     { name: "Product" },
   ]);
 
-  const [loaiThuocs, setloaiThuocs] = useState([
-    { name: "Thuốc tây y" , code: 1},
-    { name: "Chế phẩm Y học cổ truyền" , code: 2},
-    { name: "Vị thuốc y học cổ truyền" , code: 3},
+  const [departmentCodeBCs, setDepartmentCodeBCs] = useState([
+    { name: "K01" , code: 1},
+    { name: "K02" , code: 2},
+    { name: "K03" , code: 3},
+    { name: "K04" , code: 4},
+    { name: "K05" , code: 5},
+    { name: "K06" , code: 6},
   ]);
 
-  const [loaiVatTus , setloaiVatTus ] = useState([
-    { name: "Bơm kim tiêm" , code: 1 },
-    { name: "Dung môi" , code: 2 },
-    { name: "Hóa chất XN'" , code: 3 },
-    { name: "Hộp an toàn" , code: 4 },
-    { name: "Thuốc", code: 5  },
-    { name: "Vắc xin", code: 6  },
-    { name: "Vật tư y tế", code: 7 },
+
+  const [departmentTypes, setDepartmentTypes] = useState([
+    { name: "Phòng bệnh" , code: 1 },
+    { name: "Phòng khám /ngoại trú" , code: 2 },
+    { name: "Điều trị nội trú" , code: 3 },
+    { name: "Khoa xét nghiệm" , code: 4 },
+    { name: "Khoa chẩn đoán hình ảnh", code: 5  },
   ]);
-  const [donViTinhs, setdonViTinhs] = useState([
-    { name: "Bình" , code: 1 },
-    { name: "Can"  , code: 2},
-    { name: "Chiếc" , code: 3 },
-    { name: "Gói" , code: 4 },
-    { name: "Gram" , code: 5 },
-    { name: "Lít" , code: 6 },
-    { name: "Lọ" , code: 7 },
-    { name: "Ml" , code: 8 },
-    { name: "Ống" , code: 9 },
-    { name: "Tuýp" , code: 10 },
-    { name: "Vỉ" , code: 11 },
-    { name: "Viên" , code: 12 },
+  const [roomTypes, setRoomTypes] = useState([
+    { name: "Phòng bình thường" , code: 1 },
+    { name: "Phòng dịch vụ 1"  , code: 2},
+    { name: "Phòng dịch vụ 2" , code: 3 }
   ]);
-  const [duongDungs, setduongDungs] = useState([
-    { name: "Áp ngoài da" , code: 1 },
-    { name: "Bôi"  , code: 2},
-    { name: "Hít" , code: 3 },
-    { name: "Đặt dưới lưỡi" , code: 4 },
-    { name: "Ngậm" , code: 5 },
-    { name: "Nhai" , code: 6 },
-    { name: "Nhỏ mắt" , code: 7 },
-    { name: "Nhỏ mũi" , code: 8 },
-    { name: "Nhỏ tai" , code: 9 },
-    { name: "Tiêm" , code: 10 },
-    { name: "Uống" , code: 11 },
+  const [Levels, setLevels] = useState([
+    { name: 1 },
+    { name: 2 },
+    { name: 3 },
   ]);
 
-  const [loaiThuoc, setloaiThuoc] = useState(loaiThuocs[0]?.code);
-  const [loaiVatTu, setloaiVatTu] = useState(loaiVatTus[0]?.name);
-  const [donViTinh, setdonViTinh] = useState(donViTinhs[0]?.name);
-  const [duongDung, setduongDung] = useState(duongDungs[0]?.name);
+  const [departmentCodeBC, setDepartmentCodeBC] = useState(departmentCodeBCs[0]?.code);
+  const [departmentType, setDepartmentType] = useState(departmentTypes[0]?.name);
+  const [roomType, setRoomType] = useState(roomTypes[0]?.name);
+  const [level, setLevel] = useState(Levels[0]?.name);
 
 
   const applyFor = pathname.split("/")[2];
   const type = convertTypeToInt(applyFor);
 
-  const actions = usePrugsActions();
-  const { TextArea } = Input;
+  const actions = useDepartmentActions();
+
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { id } = useParams();
@@ -95,21 +79,17 @@ const CreateRole = ({ }) => {
   const loadDetail = async () => {
     setLoading(true);
     const { data } = await actions.show(id);
-
     // console.log(data.data);
     // const { result } = data ?? {};
     // console.log(result);
     form.setFieldsValue({
       code: data.data.code,
+      departmentCodeBC: data.data.departmentCodeBC,
+      departmentType: data.data.departmentType,
+      level: data.data.level,
       name: data.data.name,
-      loaiThuoc: data.data.loaiThuoc,
-      loaiVatTu: data.data.loaiVatTu,
-      donViTinh: data.data.donViTinh,
-      duongDung: data.data.duongDung,
-      quyCach: data.data.quyCach,
-      congDung: data.data.congDung,
-      soDangKy: data.data.soDangKy,
-      price: data.data.price,
+      roomType: data.data.roomType,
+      typeOffice: data.data.typeOffice,
     });
     setLoading(false);
   };
@@ -126,7 +106,7 @@ const CreateRole = ({ }) => {
       setSaveLoading(true);
       const data = {
         id,
-        ...values,
+        ...values, departmentCodeBC , departmentType , roomType , level ,
         apply_for: type,
       };
       console.log(isEdit);
@@ -165,7 +145,7 @@ const CreateRole = ({ }) => {
       >
 
         <Row gutter={12}>
-          <Col span={18}>
+          <Col span={16}>
             <Card title="Thông tin">
               {loading ? (
                 <Spin />
@@ -174,7 +154,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="code"
-                      label="Mã thuốc"
+                      label="Mã phòng ban"
                       rules={[
                         {
                           required: true,
@@ -188,7 +168,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="name"
-                      label="Tên thuốc"
+                      label="Tên phòng ban"
                       rules={[
                         {
                           required: true,
@@ -201,22 +181,8 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
                     <Form.Item
-                      name="price"
-                      label="Giá thuốc"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col md={10}>
-                    <Form.Item
-                      name="loaiThuoc"
-                      label="Loại thuốc"
+                      name="departmentCodeBC"
+                      label="Mã BC BHYT"
                       rules={[
                         {
                           required: true,
@@ -225,17 +191,17 @@ const CreateRole = ({ }) => {
                       ]}
                     >
                       <Select
-                        name="loaiThuoc"
-                        defaultValue={loaiThuocs[0]?.code}
+                        name="departmentCodeBC"
+                        defaultValue={departmentCodeBCs[0]?.code}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                        onChange={(value) => setloaiThuoc(value)}
+                        onChange={(value) => setDepartmentCodeBC(value)}
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
                       >
-                        {loaiThuocs.map((item) => (
+                        {departmentCodeBCs.map((item) => (
                           <Option key={item.code} value={item.code}>
                             {item.name}
                           </Option>
@@ -245,8 +211,8 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
                     <Form.Item
-                      name="loaiVatTu"
-                      label="Loại vật tư"
+                      name="departmentType"
+                      label="Loại phòng ban"
                       rules={[
                         {
                           required: true,
@@ -255,17 +221,17 @@ const CreateRole = ({ }) => {
                       ]}
                     >
                       <Select
-                        name="loaiVatTu"
-                        defaultValue={loaiVatTus[0]?.name}
+                        name="departmentType"
+                        defaultValue={departmentTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                      onChange={(value) => setloaiVatTu(value)}
+                      onChange={(value) => setDepartmentType(value)}
                       filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
                       >
-                        {loaiVatTus.map((item) => (
+                        {departmentTypes.map((item) => (
                           <Option key={item.code} value={item.code}>
                             {item.name}
                           </Option>
@@ -275,8 +241,8 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
                     <Form.Item
-                      name="donViTinh"
-                      label="Đơn vị tính"
+                      name="roomType"
+                      label="Loại phòng ban"
                       rules={[
                         {
                           required: true,
@@ -285,17 +251,17 @@ const CreateRole = ({ }) => {
                       ]}
                     >
                       <Select
-                        name="donViTinh"
-                        defaultValue={donViTinhs[0]?.name}
+                        name="roomType"
+                        defaultValue={roomTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                      onChange={(value) => setdonViTinh(value)}
+                      onChange={(value) => setRoomType(value)}
                       filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
                       >
-                        {donViTinhs.map((item) => (
+                        {roomTypes.map((item) => (
                           <Option key={item.code} value={item.code}>
                             {item.name}
                           </Option>
@@ -305,8 +271,8 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
                     <Form.Item
-                      name="duongDung"
-                      label="Đường dụng"
+                      name="level"
+                      label="Cấp"
                       rules={[
                         {
                           required: true,
@@ -315,65 +281,22 @@ const CreateRole = ({ }) => {
                       ]}
                     >
                       <Select
-                        name="duongDung"
-                        defaultValue={duongDungs[0]?.name}
+                        name="level"
+                        defaultValue={Levels[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                        onChange={(value) => setduongDung(value)}
+                      onChange={(value) => setLevel(value)}
                       filterOption={(input, option) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
                       >
-                        {duongDungs.map((item) => (
-                          <Option key={item.code} value={item.code}>
+                        {Levels.map((item) => (
+                          <Option key={item.name} value={item.name}>
                             {item.name}
                           </Option>
                         ))}
                       </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col md={10}>
-                    <Form.Item
-                      name="soDangKy"
-                      label="Sổ đăng ký"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col md={10}>
-                    <Form.Item
-                      name="congDung"
-                      label="Công dụng"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  
-                  <Col md={10}>
-                    <Form.Item
-                      name="quyCach"
-                      label="Quy cách"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <InputNumber min={1} max={1000} defaultValue={1}/>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -382,7 +305,7 @@ const CreateRole = ({ }) => {
             </Card>
           </Col>
 
-          <Col span={4}>
+          <Col span={6}>
             <Card title="Hành động">
               {saveLoading ? (
                 <Spin />
@@ -399,7 +322,7 @@ const CreateRole = ({ }) => {
                   <Button
                     type="default"
                     className="bg-red-500 text-white"
-                    onClick={() => navigate("/drugs/" + applyFor)}
+                    onClick={() => navigate("/category/" + applyFor)}
                   >
                     Huỷ bỏ
                   </Button>

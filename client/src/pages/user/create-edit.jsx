@@ -49,7 +49,8 @@ const CreateEditUser = ({}) => {
     const [province, setProvince] = useState(null);
     const [district, setDistrict] = useState(null);
     const [ward, setWard] = useState(null);
-
+    
+  
     useEffect(() => {
         if(province) {
             setDistrictFilter(districts.filter(district => district.parent_code === province))
@@ -75,16 +76,28 @@ const CreateEditUser = ({}) => {
     const loadDetail = async () => {
         setLoading(true);
         const { data } = await userActions.show(id);
+
+        console.log(data , 'data');
         form.setFieldsValue({
-            ...data,
-            hire: [
-                data.hire_from ? moment(data.hire_from) : null,
-                data.hire_to ? moment(data.hire_to) : null,
-            ],
-            birthdate:data.birthdate ? moment(data.birthdate) : null,
-        });
-        setModel({
-            avatar: data.avatar,
+
+            code:data.data.code,
+            name:data.data.name,
+            district:data.data.district,
+            province:data.data.province,
+            role:data.data.roles[0].ids,
+            ward:data.data.ward,
+            education:data.data.education,
+            address:data.data.address,
+            email:data.data.email,
+            gender:data.data.gender,
+            level:data.data.level,
+            password:data.data.password,
+            phone:data.data.phone,
+            type:data.data.type,
+            username:data.data.username,
+            departmentId:data.data.department.id,
+            birthDay:moment(data.data.birthDay),
+
         });
         setLoading(false);
     };
@@ -99,18 +112,20 @@ const CreateEditUser = ({}) => {
     const onSave = async () => {
         try {
             const values = await form.validateFields();
+            console.log(values  ,' values');
             setSaveLoading(true);
+            const data = {
+                id:id*1,
+                ...values,
+                district:parseInt(values.district),
+                province:parseInt(values.province),
+                ward:parseInt(values.ward),
+                birthDay:moment(values.birthDay).format("DD/MM/YYYY")
+            }
             if (isEdit) {
-                await userActions.update(id, {
-                    province,
-                    ...values,
-                    ...model,
-                });
+                await userActions.update(data);
             } else {
-                await userActions.create({
-                    ...values,
-                    ...model,
-                });
+                await userActions.create(data);
                 form.resetFields();
             }
             setSaveLoading(false);
@@ -162,6 +177,19 @@ const CreateEditUser = ({}) => {
                                         <Input />
                                     </Form.Item>
                                     <Form.Item
+                                        name="name"
+                                        label="Tên nhân viên"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Vui lòng nhập username",
+                                            },
+                                        ]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                    <Form.Item
                                         name="username"
                                         label="Username"
                                         rules={[
@@ -174,7 +202,6 @@ const CreateEditUser = ({}) => {
                                     >
                                         <Input />
                                     </Form.Item>
-                                    {!isEdit && (
                                         <Form.Item
                                             name="password"
                                             label="Mật khẩu"
@@ -188,7 +215,19 @@ const CreateEditUser = ({}) => {
                                         >
                                             <Input type={"password"}/>
                                         </Form.Item>
-                                    )}
+                                    <Form.Item
+                                        name="address"
+                                        label="Địa chỉ"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Vui lòng nhập address",
+                                            },
+                                        ]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
                                     <Form.Item
                                         name="email"
                                         label="Email"
@@ -224,6 +263,19 @@ const CreateEditUser = ({}) => {
                                     >
                                         <Input />
                                     </Form.Item>
+
+                                    <Form.Item name="role" label="Quyền truy cập">
+                                        <Select
+                                            options={[
+                                                { label: "Admin", value: 1 },
+                                                { label: "Customer", value: 2 },
+                                                {
+                                                    label: "Employe",
+                                                    value: 3,
+                                                },
+                                            ]}
+                                        />
+                                    </Form.Item>
                                     <Form.Item name="gender" label="Giới tính">
                                         <Select
                                             options={[
@@ -243,6 +295,43 @@ const CreateEditUser = ({}) => {
                                         <DatePicker
                                             className="w-full"
                                             placeholder="Chọn ngày"
+                                        />
+                                    </Form.Item>
+
+                                    <Form.Item name="level" label="Chức vụ">
+                                        <Select
+                                            options={[
+                                                { label: "Bác sĩ chuyên khoa", value: 1 },
+                                                { label: "Bảo vệ", value: 2 },
+                                                {
+                                                    label: "Điều dưỡng",
+                                                    value: 3,
+                                                },
+                                                {
+                                                    label: "Cử nhân sinh học",
+                                                    value: 4,
+                                                },
+                                                {
+                                                    label: "Y tá",
+                                                    value: 5,
+                                                },
+                                                {
+                                                    label: "Dược sĩ",
+                                                    value: 5,
+                                                },
+                                                {
+                                                    label: "Giám đốc",
+                                                    value: 5,
+                                                },
+                                                {
+                                                    label: "Hộ lý",
+                                                    value: 6,
+                                                },
+                                                {
+                                                    label: "Phó giám đốc",
+                                                    value: 7,
+                                                },
+                                            ]}
                                         />
                                     </Form.Item>
 
@@ -275,9 +364,35 @@ const CreateEditUser = ({}) => {
                                             </Select>
                                         </Form.Item>
 
+                                        <Form.Item name="education" label="Chức danh">
+                                            <Select
+                                                options={[
+                                                    { label: "Bác sĩ điều trị", value: 1 },
+                                                    { label: "Cử nhân điều dưỡng", value: 2 },
+                                                    {
+                                                        label: "Y sĩ",
+                                                        value: 3,
+                                                    },
+                                                ]}
+                                            />
+                                        </Form.Item>
+
+                                        <Form.Item name="type" label="Loại nhân lực">
+                                            <Select
+                                                options={[
+                                                    { label: "Biên chế", value: 1 },
+                                                    { label: "Hợp đồng", value: 2 },
+                                                    {
+                                                        label: "Nhân lực thôn bản",
+                                                        value: 3,
+                                                    },
+                                                ]}
+                                            />
+                                        </Form.Item>
+
 
                                         <Form.Item
-                                            name="provinceId"
+                                            name="province"
                                             label="Tỉnh/TP"
                                             rules={[
                                                 {
@@ -287,7 +402,7 @@ const CreateEditUser = ({}) => {
                                             ]}
                                             >
                                             <Select
-                                                // name="provinceId"
+                                                name="province"
                                                 defaultValue={null}
                                                 showSearch
                                                 style={{ width: 200 }}
@@ -308,7 +423,7 @@ const CreateEditUser = ({}) => {
                                         </Form.Item>
 
                                         <Form.Item
-                                            // name="districtId"
+                                            name="district"
                                             label="Quận/Huyện"
                                             rules={[
                                                 {
@@ -318,7 +433,7 @@ const CreateEditUser = ({}) => {
                                             ]}
                                             >
                                             <Select
-                                                name="districtId"
+                                                name="district"
                                                 defaultValue={null}
                                                 showSearch
                                                 style={{ width: 200 }}
@@ -337,7 +452,7 @@ const CreateEditUser = ({}) => {
                                         </Form.Item>
 
                                         <Form.Item
-                                            name="wardId"
+                                            name="ward"
                                             label="Xã/Phường"
                                             rules={[
                                                 {
@@ -347,7 +462,7 @@ const CreateEditUser = ({}) => {
                                             ]}
                                             >
                                             <Select
-                                                name="wardId"
+                                                name="ward"
                                                 defaultValue={null}
                                                 showSearch
                                                 style={{ width: 200 }}

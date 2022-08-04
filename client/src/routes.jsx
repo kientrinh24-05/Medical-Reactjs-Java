@@ -135,6 +135,7 @@ const routes = [
                     },
                 ],
             },
+
             {
                 title: "Quản lý nhà cung cấp",
                 path: "supplier",
@@ -224,6 +225,84 @@ const routes = [
                             import("@/pages/user/create-edit")
                         ),
                         title: "Cập nhật người dùng",
+                        hidden: true,
+                    },
+                ],
+            },
+        ],
+    },
+
+    {
+        title: "Danh mục khám bệnh",
+        icon: <FallOutlined />,
+        path: "",
+        childs: [
+            {
+                title: "Khám bệnh",
+                path: "medical_examination",
+                component: lazy(() => import("@/pages/medical_examination")),
+                childs: [
+                    {
+                        path: "create",
+                        component: lazy(() =>
+                            import("@/pages/medical_examination/create-edit")
+                        ),
+                        title: "Thêm dịch vụ",
+                        hidden: true,
+                    },
+                    {
+                        path: "edit/:id",
+                        component: lazy(() =>
+                            import("@/pages/medical_examination/create-edit")
+                        ),
+                        title: "Cập nhật dịch vụ",
+                        hidden: true,
+                    },
+                ],
+            },
+
+            {
+                title: "Hóa đơn dịch vụ",
+                path: "invoices",
+                component: lazy(() => import("@/pages/invoices")),
+                childs: [
+                    {
+                        path: "create",
+                        component: lazy(() =>
+                            import("@/pages/invoices/create-edit")
+                        ),
+                        title: "Thêm hóa đơn",
+                        hidden: true,
+                    },
+                    {
+                        path: "edit/:id",
+                        component: lazy(() =>
+                            import("@/pages/invoices/create-edit")
+                        ),
+                        title: "Cập nhật dịch vụ",
+                        hidden: true,
+                    },
+                ],
+            },
+            {
+                title: "Quản lý kho thuốc",
+                path: "warehouse_drug",
+                component: lazy(() => import("@/pages/warehouse_drug")),
+                childs: [
+                    {
+                        path: "create",
+                        component: lazy(() =>
+                            import("@/pages/warehouse_drug/create-edit")
+                        ),
+                        title: "Thêm kho thuốc",
+                        hidden: true,
+                    },
+                    {
+                        path: "edit/:id",
+                        component: lazy(() =>
+                            import("@/pages/warehouse_drug/create-edit")
+                        ),
+                        title: "Cập nhật dịch vụ",
                         hidden: true,
                     },
                 ],

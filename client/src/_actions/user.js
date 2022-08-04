@@ -29,9 +29,9 @@ function useUserActions() {
             .then(({ data }) => {
                 console.log(data);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-               // localStorage.setItem("access_token", data.access_token);
+               localStorage.setItem("access_token", data.token);
                 // window.axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("access_token");
-                // navigate("/")
+                navigate("/")
             });
     }
 
@@ -40,11 +40,11 @@ function useUserActions() {
         localStorage.removeItem('access_token');
         window.axios.defaults.headers.common["Authorization"] = null;
         setProfile(null);
-        // navigate("/login")
+        navigate("/login")
     }
 
     function show(id) {
-        return axios.get("/api/users/" + id);
+        return axios.get("/api/v1/user/user_get_detail/" + id);
     }
     function resetPass(id, body) {
         return axios.put("/api/users/" + id + "/reset-password", body);
@@ -71,8 +71,8 @@ function useUserActions() {
             });
     }
 
-    function update(id, params) {
-        return axios.put(`/api/users/${id}`, params)
+    function update(data) {
+        return axios.put(`/api/v1/user/user_update`, data)
             .then(({ data }) => {
                 setUsers(user => {
                     const newUsers = { ...user };
@@ -83,22 +83,22 @@ function useUserActions() {
                     return newUsers
                 })
 
-                if (id === profile?.id) {
-                    setProfile({
-                        ...profile,
-                        ...data
-                    });
-                }
+                // if (id === profile?.id) {
+                //     setProfile({
+                //         ...profile,
+                //         ...data
+                //     });
+                // }
                 return data;
             });
     }
 
     // prefixed with underscored because delete is a reserved word in javascript
     function destroy(id) {
-        return axios.delete(`/api/users/${id}`)
-            .then(() => {
+        return axios.post(`/api/v1/user/user_delete` , id).then(() => {
                 // remove user from list after deleting
                 setUsers(users => ({
+                    ...users,
                     items: [
                         ...users.items.filter(x => x.id !== id)
                     ]

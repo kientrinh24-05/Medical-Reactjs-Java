@@ -8,11 +8,11 @@ const LoginPage = () => {
     const userActions = useUserActions();
     const navigate = useNavigate();
     useEffect(() => {
-        // if (!!localStorage.getItem("access_token")) {
-        //     navigate("/");
-        // } else {
-        //     // axios.get("/sanctum/csrf-cookie");
-        // }
+        if (!!localStorage.getItem("access_token")) {
+            navigate("/");
+        } else {
+            // axios.get("/sanctum/csrf-cookie");
+        }
     }, []);
     const onFinish = async (values) => {
         try {

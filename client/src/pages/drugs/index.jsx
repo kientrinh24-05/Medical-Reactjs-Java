@@ -192,6 +192,11 @@ const DrugsPage = ({ ...props }) => {
                             title: "Tên thuốc",
                             dataIndex: "name",
                         },
+
+                        {
+                            title: "Giá thuốc",
+                            dataIndex: "price",
+                        },
                         {
                             title: "Đơn vị tính",
                             dataIndex: "donViTinh",

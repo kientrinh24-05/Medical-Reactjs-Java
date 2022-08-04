@@ -11,3 +11,5 @@ export * from './administrative';
 export * from './product';
 export * from './drugs';
 export * from './patient';
+export * from './invoices';
+export * from './warehouse_drug';

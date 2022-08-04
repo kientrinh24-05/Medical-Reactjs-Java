@@ -13,6 +13,7 @@ function useProductActions() {
         update,
         destroy,
         create,
+        getListDetail,
         reset: () => {
             useResetRecoilState(productAtom)
         },
@@ -24,6 +25,15 @@ function useProductActions() {
             total: data.data.data.totalElements,
             loaded: true,
         }));
+    
+    }
+
+    function getListDetail(params) {
+        return axios.get(`/api/v1/products/product_get_by_category/${params}`).then(({data: {data}}) => {
+            setCategory({
+                items: data,
+            })
+        });
     
     }
 

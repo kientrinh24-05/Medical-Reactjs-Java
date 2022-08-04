@@ -11,16 +11,15 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { accountAtom } from "@/_state";
 import { useRecoilValue } from "recoil";
-import { useAccountActions } from "@/_actions";
+import { useUserActions } from "@/_actions";
 import ResetPass from "@/pages/user/reset-pass";
 
 const AvatarDropdown = ({ menu }) => {
-    const actions = useAccountActions();
+    const actions = useUserActions();
     const account = useRecoilValue(accountAtom);
     const [showResetPass, setShowResetPass] = useState(false);
     const navigate = useNavigate();
     const logout = () => {
-        actions.reset();
         actions.logout();
         navigate("/login");
     };
