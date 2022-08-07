@@ -83,10 +83,10 @@ const DashBoard = ({ children }) => {
                 collapsed={appContext.collapsed}
             >
                 <div className=" bg-slate-700 h-16 flex items-center text-center">
-                    {/* <img
+                    <img
                         className="inline-block mx-auto"
                         src={appContext.collapsed ? logoMini : logo}
-                    /> */}
+                    />
                 </div>
                 <Menu
                     theme="light"
@@ -148,7 +148,6 @@ const DashBoard = ({ children }) => {
                 <Header />
                 <Content style={{ margin: "0 16px" }}>{children}</Content>
                 <Footer style={{ textAlign: "center" }}>
-                    Jira 2022 Created by Vietez
                 </Footer>
                 {/* <JobRequest /> */}
             </Layout>

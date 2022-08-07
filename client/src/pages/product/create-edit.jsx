@@ -90,7 +90,7 @@ const CreateRole = ({ }) => {
       setSaveLoading(false);
 
       message.success(
-        isEdit ? "Cập nhật phòng ban thành công" : "Thêm mới phòng ban thành công"
+        isEdit ? "Cập nhật dịch vụ thành công" : "Thêm mới dịch vụ thành công"
       );
     } catch (error) {
       console.log(error);
@@ -102,8 +102,8 @@ const CreateRole = ({ }) => {
   return (
     <div>
       <PageHeader
-        title={isEdit ? "Cập nhật phòng ban" : "Thêm mới phòng ban"}
-        onBack={() => navigate("/category")}
+        title={isEdit ? "Cập nhật dịch vụ" : "Thêm mới dịch vụ"}
+        onBack={() => navigate("/product")}
       />
 
       <Form
@@ -170,7 +170,7 @@ const CreateRole = ({ }) => {
                       label="Nhóm dịch vụ"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}

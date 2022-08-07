@@ -26,6 +26,7 @@ import { useRecoilValue } from "recoil";
 import { userCan, categoryAtom, productAtom, drugsAtom } from "@/_state";
 import { convertTypeToInt } from "./index";
 import Calendar from "../../components/calendar";
+import moment from "moment";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -223,21 +224,45 @@ const CreateRole = ({ }) => {
   const isEdit = !!id;
 
   const [saveLoading, setSaveLoading] = useState(false);
+  const [detailsDrugs, setdetailsDrugs] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const loadDetail = async () => {
     setLoading(true);
     const { data } = await actionsInvoces.show(id);
 
+    console.log(data.data ,'data');
     form.setFieldsValue({
-      code: data.data.code,
-      departmentCodeBC: data.data.departmentCodeBC,
-      departmentType: data.data.departmentType,
-      level: data.data.level,
-      name: data.data.name,
-      roomType: data.data.roomType,
+      objectType: data.data.objectType,
+      numberBHYT: data.data.numberBHYT,
+      fromDate: moment(data.data.fromDate).format("DD-MM-YYYY HH:mm:ss")  ,
+      toDate: moment(data.data.toDate).format("DD-MM-YYYY HH:mm:ss"),
+      dateStart: moment(data.data.dateStart).format("DD-MM-YYYY HH:mm:ss"),
+      dateEnd: moment(data.data.dateEnd).format("DD-MM-YYYY HH:mm:ss"),
+      routingType: data.data.routingType,
+      patientId: data.data.patient.name,
+      form: data.data.form,
       typeOffice: data.data.typeOffice,
+      trieuChung: data.data.trieuChung,
+      benhChinh: data.data.benhChinh,
+      dienGiaiBenhChinh: data.data.dienGiaiBenhChinh,
+      benhKemTheo: data.data.benhKemTheo,
+      dienGiaiBenhKemTheo: data.data.dienGiaiBenhKemTheo,
+      tuVanDieuTri: data.data.tuVanDieuTri,
+      dienBienDieuTri: data.data.dienBienDieuTri,
+      ketQuaKham: data.data.ketQuaKham,
+      dateStartString: data.data.dateStart,
+      dateEndString: data.data.dateEnd,
+      userId: data.data.users.id,
+      productId: data.data.product.nameVi,
     });
+
+    setdetailsDrugs(data.data.invoiceDetails);
+    setTotalAmount(data.data.totalAmount);
+
+    console.log(detailsDrugs ,'detailsDrugs');
+
+    console.log(fromDateString , '123');
     setLoading(false);
   };
 
@@ -401,34 +426,77 @@ const CreateRole = ({ }) => {
                     </Form.Item>
                   </Col>
                   <Col md={10}>
-                    <Form.Item
-                      name="fromDateString"
-                      label="Ngày bắt đầu"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Calendar placeholder="Chọn ngày" />
-                    </Form.Item>
+
+                      {
+                        !isEdit && (
+                          <Form.Item
+                          name="fromDateString"
+                          label="Ngày bắt đầu"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Calendar placeholder="Chọn ngày" />
+                        </Form.Item>
+                        )
+                      }
+
+                      {
+                        isEdit && (
+                          <Form.Item
+                          name="fromDate"
+                          label="Ngày bắt đầu"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Input />
+                        </Form.Item>
+                        )
+                      }
+                   
                   </Col>
 
                   <Col md={10}>
-                    <Form.Item
-                      name="toDateString"
-                      label="Ngày kết thúc"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Calendar placeholder="Chọn ngày" />
+                  {
+                        !isEdit && (
+                          <Form.Item
+                          name="toDateString"
+                          label="Ngày kết thúc"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Calendar placeholder="Chọn ngày" />
+                        </Form.Item>
+                        )
+                      }
 
-                    </Form.Item>
+                      {
+                        isEdit && (
+                          <Form.Item
+                          name="toDate"
+                          label="Ngày kết thúc"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Input  />
+                        </Form.Item>
+                        )
+                      }
                   </Col>
 
 
@@ -746,33 +814,76 @@ const CreateRole = ({ }) => {
 
 
                   <Col md={10}>
-                    <Form.Item
-                      name="dateStartString"
-                      label="Ngày khám"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Calendar placeholder="Chọn ngày" />
-                    </Form.Item>
+                    {
+                        !isEdit && (
+                          <Form.Item
+                          name="dateStartString"
+                          label="Ngày khám"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Calendar placeholder="Chọn ngày" />
+                        </Form.Item>
+                        )
+                      }
+
+                      {
+                        isEdit && (
+                          <Form.Item
+                          name="dateStart"
+                          label="Ngày bắt đầu khám"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Input  />
+                        </Form.Item>
+                        )
+                      }
                   </Col>
 
                   <Col md={10}>
-                    <Form.Item
-                      name="dateEndString"
-                      label="Ngày kết thúc khám"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung",
-                        },
-                      ]}
-                    >
-                      <Calendar placeholder="Chọn ngày" />
-                    </Form.Item>
+      
+                    {
+                        !isEdit && (
+                          <Form.Item
+                          name="dateEndString"
+                          label="Ngày kết thúc khám"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Calendar placeholder="Chọn ngày" />
+                        </Form.Item>
+                        )
+                      }
+
+                      {
+                        isEdit && (
+                          <Form.Item
+                          name="dateEnd"
+                          label="Ngày kết thúc khám"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập nội dung",
+                            },
+                          ]}
+                        >
+                          <Input  />
+                        </Form.Item>
+                        )
+                      }
                   </Col>
                   <Col md={10}>
                     <Form.Item
@@ -804,34 +915,39 @@ const CreateRole = ({ }) => {
                       </Select>
                     </Form.Item>
                   </Col>
+                  {!isEdit && (
                   <Col md={10}>
-                    <Form.Item
+                  
+                         <Form.Item
 
-                      label="Nhóm dịch vụ"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập tên danh mục",
-                        },
-                      ]}
-                    >
-                      <Select
-                        showSearch
-                        style={{ width: 200 }}
-                        optionFilterProp="children"
-                        onChange={(value) => loadDataProduct(value)}
-                        filterOption={(input, option) =>
-                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
-                      >
-                        {categoryItem.map((item) => (
-                          <Option key={item.id} value={item.id}>
-                            {item.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
+                         label="Nhóm dịch vụ"
+                         rules={[
+                           {
+                             required: true,
+                             message: "Vui lòng nhập tên danh mục",
+                           },
+                         ]}
+                       >
+                         <Select
+                           showSearch
+                           style={{ width: 200 }}
+                           optionFilterProp="children"
+                           onChange={(value) => loadDataProduct(value)}
+                           filterOption={(input, option) =>
+                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                           }
+                         >
+                           {categoryItem.map((item) => (
+                             <Option key={item.id} value={item.id}>
+                               {item.name}
+                             </Option>
+                           ))}
+                         </Select>
+                       </Form.Item>
+                
                   </Col>
+                   )
+                  }
                   <Col md={10}>
                     <Form.Item
                       name="productId"
@@ -899,149 +1015,213 @@ const CreateRole = ({ }) => {
           </Col>
 
           <Col span={24} className="mt-4">
-
-            <Card title="Danh sách thuốc">
-              <Row gutter={12}>
-                <Col md={12}>
-                  {loading ? (
-                    <Spin />
-                  ) : (
-                    <Table
-                      dataSource={drugs.items}
-                      pagination={false}
-                      columns={[
-                        {
-                          title: "STT",
-                          dataIndex: "id",
-                        },
-                        {
-                          title: "Tên thuốc",
-                          dataIndex: "name",
-                        },
-
-                        {
-                          title: "Loại thuốc",
-                          dataIndex: "loaiThuoc",
-                          render: (text, record) => (
-                            <>
+                {
+                  !isEdit && (
+                    <Card title="Danh sách thuốc">
+                    <Row gutter={12}>
+                      <Col md={12}>
+                        {loading ? (
+                          <Spin />
+                        ) : (
+                          <Table
+                            dataSource={drugs.items}
+                            pagination={false}
+                            columns={[
                               {
-                                typeDrugs[text]
-                              }
-                            </>
-                          ),
-                        },
-                        {
-                          title: "Công dụng",
-                          dataIndex: "duongDung",
-                          render: (text, record) => (
-                            <>
+                                title: "STT",
+                                dataIndex: "id",
+                              },
                               {
-                                usageDrugs[text]
-                              }
-                            </>
-                          ),
-                        },
-                        {
-                          title: "Hành động",
-                          width: 150,
-                          render: (_, record) => (
-                            <div className="text-center">
-                              {loadingRow == record.id ? (
-                                <Spin />
-                              ) : (
-                                <Space size="middle">
-
-                                  <a
-                                    className="text-blue-400 text-center"
-                                    onClick={() => pushData(record)
+                                title: "Tên thuốc",
+                                dataIndex: "name",
+                              },
+      
+                              {
+                                title: "Loại thuốc",
+                                dataIndex: "loaiThuoc",
+                                render: (text, record) => (
+                                  <>
+                                    {
+                                      typeDrugs[text]
                                     }
-                                  >
-                                    +
-                                  </a>
+                                  </>
+                                ),
+                              },
+                              {
+                                title: "Công dụng",
+                                dataIndex: "duongDung",
+                                render: (text, record) => (
+                                  <>
+                                    {
+                                      usageDrugs[text]
+                                    }
+                                  </>
+                                ),
+                              },
+                              {
+                                title: "Hành động",
+                                width: 150,
+                                render: (_, record) => (
+                                  <div className="text-center">
+                                    {loadingRow == record.id ? (
+                                      <Spin />
+                                    ) : (
+                                      <Space size="middle">
+      
+                                        <a
+                                          className="text-blue-400 text-center"
+                                          onClick={() => pushData(record)
+                                          }
+                                        >
+                                          +
+                                        </a>
+      
+      
+                                      </Space>
+                                    )}
+                                  </div>
+                                ),
+                              },
+                            ]}
+      
+                          // footer={() => `Tổng số danh mục ${pagination.total}`}
+                          // onChange={handleTableChange}
+                          ></Table>
+                        )}
+                      </Col>
+      
+                      <Col md={12}>
+                        {loading ? (
+                          <Spin />
+                        ) : (
+                          <Table
+                            dataSource={details}
+                            pagination={false}
+                            columns={[
+                              {
+                                title: "STT",
+                                dataIndex: "drugId",
+                              },
+                              {
+                                title: "Tên thuốc",
+                                dataIndex: "amout",
+                              },
+      
+                              {
+                                title: "Giá",
+                                dataIndex: "price",
+                              },
+                              {
+                                title: "Số lượng",
+                                dataIndex: "quantity",
+                                render: (quantity) => quantity
+                              },
+      
+                            ]}
+                            loading={loading}
+      
+                          ></Table>
+                        )}
+                            Tổng cộng  {totalAmount}
+                      </Col>
+      
+                    
+      
+                    </Row>
+      
+                   
+                  </Card>
+                  )
+                }
 
+                {
+                  isEdit && (
+                    <Card title="Danh sách thuốc">
+                    <Row gutter={12}>
+                      <Col md={12}>
+                        {loading ? (
+                          <Spin />
+                        ) : (
+                          <Form.Item
+                      name="listDrugs"
+                    >
+                        <Table
+                           
+                            dataSource={detailsDrugs}
+                            pagination={false}
+                            columns={[
+                              {
+                                title: "STT",
+                                dataIndex: "id",
+                              },
+                              {
+                                title: "Tên thuốc",
+                                dataIndex: "drug",
+                                render: (drug) => drug.name,
+                              },
 
-                                </Space>
-                              )}
-                            </div>
-                          ),
-                        },
-                      ]}
-
-                    // footer={() => `Tổng số danh mục ${pagination.total}`}
-                    // onChange={handleTableChange}
-                    ></Table>
-                  )}
-                </Col>
-
-                <Col md={12}>
-                  {loading ? (
+                              {
+                                title: "Công dụng",
+                                dataIndex: "drug",
+                                render: (drug) => drug.congDung,
+                              },
+      
+      
+                              {
+                                title: "Giá",
+                                dataIndex: "price",
+                              },
+                              {
+                                title: "Số lượng",
+                                dataIndex: "quantity",
+                                render: (quantity) => quantity
+                              },
+      
+                            ]}
+                            loading={loading}
+      
+                          ></Table>
+                    </Form.Item>
+                        
+                        )}
+                            Tổng cộng  {totalAmount ? totalAmount : "10000"}
+                      </Col>
+                    </Row>
+      
+                   
+                  </Card>
+                  )
+                }
+           
+          </Col>
+              {
+                !isEdit && ( <Col span={8} className="mt-4">
+                <Card title="Hành động">
+                  {saveLoading ? (
                     <Spin />
                   ) : (
-                    <Table
-                      dataSource={details}
-                      pagination={false}
-                      columns={[
-                        {
-                          title: "STT",
-                          dataIndex: "drugId",
-                        },
-                        {
-                          title: "Tên thuốc",
-                          dataIndex: "amout",
-                        },
-
-                        {
-                          title: "Giá",
-                          dataIndex: "price",
-                        },
-                        {
-                          title: "Số lượng",
-                          dataIndex: "quantity",
-                          render: (quantity) => quantity
-                        },
-
-                      ]}
-                      loading={loading}
-
-                    ></Table>
+                    <Space>
+                      <Button
+                        disabled={loading}
+                        type="primary"
+                        className="bg-slate-600 text-white"
+                        htmlType="submit"
+                      >
+                        Lưu lại
+                      </Button>
+                      <Button
+                        type="default"
+                        className="bg-red-500 text-white"
+                        onClick={() => navigate("/category/" + applyFor)}
+                      >
+                        Huỷ bỏ
+                      </Button>
+                    </Space>
                   )}
-                      Tổng cộng  {totalAmount}
-                </Col>
-
-              
-
-              </Row>
-
-             
-
-            </Card>
-          </Col>
-
-          <Col span={8} className="mt-4">
-            <Card title="Hành động">
-              {saveLoading ? (
-                <Spin />
-              ) : (
-                <Space>
-                  <Button
-                    disabled={loading}
-                    type="primary"
-                    className="bg-slate-600 text-white"
-                    htmlType="submit"
-                  >
-                    Lưu lại
-                  </Button>
-                  <Button
-                    type="default"
-                    className="bg-red-500 text-white"
-                    onClick={() => navigate("/category/" + applyFor)}
-                  >
-                    Huỷ bỏ
-                  </Button>
-                </Space>
-              )}
-            </Card>
-          </Col>
+                </Card>
+              </Col>)
+              }
+          
         </Row>
 
       </Form>

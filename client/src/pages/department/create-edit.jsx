@@ -132,7 +132,7 @@ const CreateRole = ({ }) => {
     <div>
       <PageHeader
         title={isEdit ? "Cập nhật phòng ban" : "Thêm mới phòng ban"}
-        onBack={() => navigate("/category")}
+        onBack={() => navigate("/department")}
       />
 
       <Form
@@ -158,7 +158,7 @@ const CreateRole = ({ }) => {
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập tên danh mục",
+                          message: "Vui lòng nhập mã phòng ban",
                         },
                       ]}
                     >
@@ -172,7 +172,7 @@ const CreateRole = ({ }) => {
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập nội dung",
+                          message: "Vui lòng nhập tên phòng ban",
                         },
                       ]}
                     >
@@ -185,7 +185,6 @@ const CreateRole = ({ }) => {
                       label="Mã BC BHYT"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -215,7 +214,6 @@ const CreateRole = ({ }) => {
                       label="Loại phòng ban"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -245,7 +243,6 @@ const CreateRole = ({ }) => {
                       label="Loại phòng ban"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -275,7 +272,6 @@ const CreateRole = ({ }) => {
                       label="Cấp"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}

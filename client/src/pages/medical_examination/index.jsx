@@ -184,7 +184,7 @@ const ExaminationPage = ({ ...props }) => {
                                                     className="text-blue-400"
                                                     onClick={() =>
                                                         navigate(
-                                                            "/department/edit/" +
+                                                            "/medical_examination/edit/" +
                                                                 record.id
                                                         )
                                                     }

@@ -340,7 +340,6 @@ const CreateEditUser = ({}) => {
                                             label="Phòng ban"
                                             rules={[
                                                 {
-                                                required: true,
                                                 message: "Vui lòng nhập tên danh mục",
                                                 },
                                             ]}

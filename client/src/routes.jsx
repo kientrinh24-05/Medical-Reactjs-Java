@@ -239,8 +239,10 @@ const routes = [
         childs: [
             {
                 title: "Khám bệnh",
-                path: "medical_examination",
-                component: lazy(() => import("@/pages/medical_examination")),
+                path: "medical_examination/create",
+                component: lazy(() =>
+                import("@/pages/medical_examination/create-edit")
+                ),
                 childs: [
                     {
                         path: "create",

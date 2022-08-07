@@ -33,7 +33,7 @@ function useWareHouseDrugActions() {
     }
 
     function show(id) {
-        return axios.get("/api/v1/departments/department_get_detail/" + id);
+        return axios.get("/api/v1/invoices/invoice_get_detail/" + id);
     }
     function create(data) {
         return axios.post("/api/v1/warehouse_drugs/warehouse_drugs_create", data).then(({ data }) => {

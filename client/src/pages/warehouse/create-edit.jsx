@@ -98,7 +98,7 @@ const CreatWareHouse = ({ }) => {
     <div>
       <PageHeader
         title={isEdit ? "Cập nhật kho dược" : "Thêm mới kho dược"}
-        onBack={() => navigate("/category")}
+        onBack={() => navigate("/warehouse")}
       />
 
       <Form
@@ -155,7 +155,7 @@ const CreatWareHouse = ({ }) => {
                       label="Loại kho"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập tên kho dược",
                         },
                       ]}

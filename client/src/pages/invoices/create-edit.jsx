@@ -185,7 +185,6 @@ const CreateRole = ({ }) => {
                       label="Mã BC BHYT"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -215,7 +214,6 @@ const CreateRole = ({ }) => {
                       label="Loại phòng ban"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -245,7 +243,6 @@ const CreateRole = ({ }) => {
                       label="Loại phòng ban"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -275,7 +272,6 @@ const CreateRole = ({ }) => {
                       label="Cấp"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}

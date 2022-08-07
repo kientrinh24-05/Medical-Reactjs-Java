@@ -234,8 +234,11 @@ const CreateRole = ({ }) => {
   const [loading, setLoading] = useState(false);
 
   const loadDetail = async () => {
+    debugger;
     setLoading(true);
     const { data } = await actionsWareHouseDrug.show(id);
+
+    console.log(data);
 
     form.setFieldsValue({
       code: data.data.code,
@@ -288,7 +291,7 @@ const CreateRole = ({ }) => {
       setSaveLoading(false);
 
       message.success(
-        isEdit ? "Cập nhật phòng ban thành công" : "Thêm mới phòng ban thành công"
+        isEdit ? "Cập nhật dịch vụ khám bệnh thành công" : "Thêm mới dịch vụ khám bệnh thành công"
       );
     } catch (error) {
       console.log(error);
@@ -301,8 +304,8 @@ const CreateRole = ({ }) => {
   return (
     <div>
       <PageHeader
-        title={isEdit ? "Cập nhật phòng ban" : "Thêm mới phòng ban"}
-        onBack={() => navigate("/category")}
+        title={isEdit ? "Cập nhật dịch vụ khám bệnh" : "Thêm mới dịch vụ khám bệnh"}
+        onBack={() => navigate("/invoices")}
       />
 
       <Form
@@ -378,29 +381,6 @@ const CreateRole = ({ }) => {
                         {
                           title: "Tên thuốc",
                           dataIndex: "name",
-                        },
-
-                        {
-                          title: "Loại thuốc",
-                          dataIndex: "loaiThuoc",
-                          render: (text, record) => (
-                            <>
-                              {
-                                typeDrugs[text]
-                              }
-                            </>
-                          ),
-                        },
-                        {
-                          title: "Công dụng",
-                          dataIndex: "duongDung",
-                          render: (text, record) => (
-                            <>
-                              {
-                                usageDrugs[text]
-                              }
-                            </>
-                          ),
                         },
                         {
                           title: "Hành động",

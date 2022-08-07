@@ -203,7 +203,7 @@ const CreateRole = ({ }) => {
                       label="Giới tính"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -233,7 +233,7 @@ const CreateRole = ({ }) => {
                       label="Đối tượng"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}

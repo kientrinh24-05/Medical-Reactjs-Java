@@ -137,6 +137,7 @@ const InvoicesPage = ({ ...props }) => {
             <Card>
                 <Table
                     dataSource={deparment.items}
+                    
                     columns={[
                         {
                             title: "STT",
@@ -217,6 +218,21 @@ const InvoicesPage = ({ ...props }) => {
                                         <Spin />
                                     ) : (
                                         <Space size="middle">
+
+                                            {!canDelete && (
+                                                
+                                                    <Button 
+
+                                                    onClick={() =>
+                                                        navigate(
+                                                            "/medical_examination/create/edit/" +
+                                                                record.id
+                                                        )
+                                                    }
+                                                    type="primary" size="small">
+                                                    Xem chi tiết
+                                                </Button>
+                                            )}
                                             {!canDelete && (
                                                 
                                                 <Popconfirm

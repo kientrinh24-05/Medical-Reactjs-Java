@@ -139,7 +139,7 @@ const CreateRole = ({ }) => {
       setSaveLoading(false);
 
       message.success(
-        isEdit ? "Cập nhật phòng ban thành công" : "Thêm mới phòng ban thành công"
+        isEdit ? "Cập nhật thuốc thành công" : "Thêm mới thuốc thành công"
       );
     } catch (error) {
       console.log(error);
@@ -151,8 +151,8 @@ const CreateRole = ({ }) => {
   return (
     <div>
       <PageHeader
-        title={isEdit ? "Cập nhật phòng ban" : "Thêm mới phòng ban"}
-        onBack={() => navigate("/category")}
+        title={isEdit ? "Cập nhật thuốc" : "Thêm mới thuốc"}
+        onBack={() => navigate("/drugs")}
       />
 
       <Form
@@ -219,7 +219,6 @@ const CreateRole = ({ }) => {
                       label="Loại thuốc"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -249,7 +248,6 @@ const CreateRole = ({ }) => {
                       label="Loại vật tư"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -279,7 +277,6 @@ const CreateRole = ({ }) => {
                       label="Đơn vị tính"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -309,7 +306,6 @@ const CreateRole = ({ }) => {
                       label="Đường dụng"
                       rules={[
                         {
-                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}

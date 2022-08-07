@@ -202,7 +202,6 @@ const CreateRole = ({ }) => {
                                                 label="Cấp độ"
                                                 rules={[
                                                     {
-                                                        required: true,
                                                         message: "Vui lòng nhập tên danh mục",
                                                     },
                                                 ]}
