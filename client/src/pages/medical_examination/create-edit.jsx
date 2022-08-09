@@ -14,7 +14,8 @@ import {
   DatePicker,
   Divider,
   Table,
-  Switch
+  Switch,
+  InputNumber
 } from "antd";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -27,6 +28,7 @@ import { userCan, categoryAtom, productAtom, drugsAtom } from "@/_state";
 import { convertTypeToInt } from "./index";
 import Calendar from "../../components/calendar";
 import moment from "moment";
+import { formatMoney } from "../../utils/helper";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -82,9 +84,8 @@ const CreateRole = ({ }) => {
   ]);
 
   const [subjects, setSubjects] = useState([
-    { name: "BHYT", code: 1 },
-    { name: "Thu phí", code: 2 },
-    { name: "Miễn phí", code: 3 }
+    { name: "Thu phí", code: 1 },
+    { name: "Miễn phí", code: 2 }
   ]);
 
   const [lines, setLines] = useState([
@@ -119,13 +120,15 @@ const CreateRole = ({ }) => {
 
 
 
-
   const [result, setResult] = useState(results[0]?.code);
   const [disease, setDisease] = useState(diseases[0]?.code);
   const [includedisease, setIncludeDisease] = useState(Includediseases[0]?.code);
   const [subject, setSubject] = useState(subjects?.name);
   const [area, setArea] = useState(areas?.name);
   const [line, setLine] = useState(lines?.name);
+  const [numberPatient, setnumberPatient] = useState("");
+  const [cardNumber, setcardNumber] = useState("");
+  const [codepatient, setcodepatient] = useState("");
 
   const [loadingRow, setLoadingRow] = useState(null);
 
@@ -162,28 +165,35 @@ const CreateRole = ({ }) => {
       return item1 + item2.price * item2.quantity
     }, 0)
     setTotalAmount(total);
+
+    console.log(details ,'details');
+
+    const totalMount = details.map(item => {
+      console.log(item);
+    })
+
+    console.log(totalMount);
   }, [details])
- 
+
 
   const pushData = (record) => {
 
-    console.log(record , 'record');
- 
-  
+    console.log(record ,'record');
     const index = details.map(item => item.drugId).indexOf(record.id);
 
     if (index !== -1) {
       const newDetails = [...details];
       newDetails[index].quantity++;
+      newDetails[index].amout = record.price * newDetails[index].quantity;
       setDetails(newDetails);
     } else {
       const newDetails = [...details];
       newDetails.push(
         {
-          amout: record.name,
+          amout: (record.price * quantityDrugs),
           drugId: record.id,
           price: record.price ? record.price : 10000,
-          quantity: 1,
+          quantity: quantityDrugs,
         }
       )
       setDetails(newDetails);
@@ -200,6 +210,18 @@ const CreateRole = ({ }) => {
   const loadDataProduct = async (productId) => {
     await actionsProduct.getListDetail(productId);
   }
+
+  const OnchangePatientId = async (patientId) => {
+    const dataPatient = await actionsPatient.show(patientId);
+    const newDataPatient = { ...dataPatient.data.data };
+
+    setnumberPatient(newDataPatient.number);
+    setcardNumber(newDataPatient.cardNumber);
+    setcodepatient(newDataPatient.code);
+    console.log(newDataPatient);
+  }
+
+  console.log('numberPatient: ', numberPatient);
 
   const loadDataPatient = async () => {
     setLoading(true);
@@ -226,16 +248,16 @@ const CreateRole = ({ }) => {
   const [saveLoading, setSaveLoading] = useState(false);
   const [detailsDrugs, setdetailsDrugs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [quantityDrugs, setquantityDrugs] = useState(1);
 
   const loadDetail = async () => {
     setLoading(true);
     const { data } = await actionsInvoces.show(id);
 
-    console.log(data.data ,'data');
     form.setFieldsValue({
       objectType: data.data.objectType,
       numberBHYT: data.data.numberBHYT,
-      fromDate: moment(data.data.fromDate).format("DD-MM-YYYY HH:mm:ss")  ,
+      fromDate: moment(data.data.fromDate).format("DD-MM-YYYY HH:mm:ss"),
       toDate: moment(data.data.toDate).format("DD-MM-YYYY HH:mm:ss"),
       dateStart: moment(data.data.dateStart).format("DD-MM-YYYY HH:mm:ss"),
       dateEnd: moment(data.data.dateEnd).format("DD-MM-YYYY HH:mm:ss"),
@@ -260,9 +282,6 @@ const CreateRole = ({ }) => {
     setdetailsDrugs(data.data.invoiceDetails);
     setTotalAmount(data.data.totalAmount);
 
-    console.log(detailsDrugs ,'detailsDrugs');
-
-    console.log(fromDateString , '123');
     setLoading(false);
   };
 
@@ -288,6 +307,13 @@ const CreateRole = ({ }) => {
 
 
 
+  const onChangeNumber = (value) => {
+
+    setquantityDrugs(value)
+  };
+
+
+
   const onSave = async () => {
     try {
       const values = form.getFieldsValue();
@@ -295,11 +321,9 @@ const CreateRole = ({ }) => {
       const data = {
         id,
         ...values,
-        totalAmount,
         details,
         apply_for: type,
       };
-      console.log(isEdit);
       if (isEdit) {
         await actionsInvoces.update(data);
       } else {
@@ -367,6 +391,7 @@ const CreateRole = ({ }) => {
         labelCol={{
           span: 6,
         }}
+
       >
 
         <Row gutter={14}>
@@ -390,7 +415,7 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="objectType"
-                        defaultValue={subjects[0]?.code}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -416,7 +441,7 @@ const CreateRole = ({ }) => {
                       label="Số thẻ BHYT"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -427,9 +452,9 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
 
-                      {
-                        !isEdit && (
-                          <Form.Item
+                    {
+                      !isEdit && (
+                        <Form.Item
                           name="fromDateString"
                           label="Ngày bắt đầu"
                           rules={[
@@ -441,12 +466,12 @@ const CreateRole = ({ }) => {
                         >
                           <Calendar placeholder="Chọn ngày" />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
 
-                      {
-                        isEdit && (
-                          <Form.Item
+                    {
+                      isEdit && (
+                        <Form.Item
                           name="fromDate"
                           label="Ngày bắt đầu"
                           rules={[
@@ -458,15 +483,15 @@ const CreateRole = ({ }) => {
                         >
                           <Input />
                         </Form.Item>
-                        )
-                      }
-                   
+                      )
+                    }
+
                   </Col>
 
                   <Col md={10}>
-                  {
-                        !isEdit && (
-                          <Form.Item
+                    {
+                      !isEdit && (
+                        <Form.Item
                           name="toDateString"
                           label="Ngày kết thúc"
                           rules={[
@@ -478,12 +503,12 @@ const CreateRole = ({ }) => {
                         >
                           <Calendar placeholder="Chọn ngày" />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
 
-                      {
-                        isEdit && (
-                          <Form.Item
+                    {
+                      isEdit && (
+                        <Form.Item
                           name="toDate"
                           label="Ngày kết thúc"
                           rules={[
@@ -493,10 +518,10 @@ const CreateRole = ({ }) => {
                             },
                           ]}
                         >
-                          <Input  />
+                          <Input />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
                   </Col>
 
 
@@ -514,7 +539,7 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="routingType"
-                        defaultValue={lines[0]?.code}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -547,7 +572,7 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="area"
-                        defaultValue={areas[0]?.name}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -569,8 +594,9 @@ const CreateRole = ({ }) => {
                   </Col>
                   <Col md={10}>
                     <Form.Item
-                      name="form"
-                      label="Loại phòng ban"
+                      name="formDTO"
+                      label="Hình thức bảo hiểm"
+
                       rules={[
                         {
                           required: false,
@@ -612,7 +638,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="patientId"
-                      label="Mã bệnh nhân"
+                      label="Chọn bệnh nhân"
                       rules={[
                         {
                           required: true,
@@ -622,11 +648,11 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="patientId"
-                        defaultValue={patientItem[0]?.name}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                        onChange={(value) => setDepartmentCodeBC(value)}
+                        onChange={(value) => OnchangePatientId(value)}
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
@@ -639,6 +665,44 @@ const CreateRole = ({ }) => {
                       </Select>
                     </Form.Item>
                   </Col>
+
+                  {
+                    !isEdit && (
+
+                      <>
+                        <Col md={10}>
+                          <Form.Item
+                            label="Mã người bệnh"
+
+                          >
+                            <Input value={codepatient ? codepatient : 'Chưa cấp'} disabled />
+                          </Form.Item>
+                        </Col>
+                        <Col md={10}>
+                          <Form.Item
+
+                            label="Năm sinh"
+                          >
+                            <Input value={numberPatient} disabled />
+                          </Form.Item>
+
+
+                        </Col>
+                        <Col md={10}>
+                          <Form.Item
+
+                            label="Số BHYT"
+                          >
+                            <Input value={cardNumber ? cardNumber : "Không có"} disabled />
+                          </Form.Item>
+                        </Col>
+                      </>
+
+
+                    )
+                  }
+
+
                 </Row>
                 </>
               )}
@@ -670,14 +734,13 @@ const CreateRole = ({ }) => {
                       label="Bệnh chính"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
                     >
                       <Select
                         name="benhChinh"
-                        defaultValue={diseases[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -700,7 +763,7 @@ const CreateRole = ({ }) => {
                       label="Diễn giải bệnh chính"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -714,14 +777,14 @@ const CreateRole = ({ }) => {
                       label="Bệnh kèm theo"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
                     >
                       <Select
                         name="benhKemTheo"
-                        defaultValue={Includediseases[0]?.name}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -744,7 +807,7 @@ const CreateRole = ({ }) => {
                       label="Diễn giải bệnh kèo theo"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -759,7 +822,7 @@ const CreateRole = ({ }) => {
                       label="Tư vấn điều trị"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -773,7 +836,7 @@ const CreateRole = ({ }) => {
                       label="Diễn biến điều trị"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -794,7 +857,7 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="ketQuaKham"
-                        defaultValue={results[0]?.code}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -815,8 +878,8 @@ const CreateRole = ({ }) => {
 
                   <Col md={10}>
                     {
-                        !isEdit && (
-                          <Form.Item
+                      !isEdit && (
+                        <Form.Item
                           name="dateStartString"
                           label="Ngày khám"
                           rules={[
@@ -828,12 +891,12 @@ const CreateRole = ({ }) => {
                         >
                           <Calendar placeholder="Chọn ngày" />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
 
-                      {
-                        isEdit && (
-                          <Form.Item
+                    {
+                      isEdit && (
+                        <Form.Item
                           name="dateStart"
                           label="Ngày bắt đầu khám"
                           rules={[
@@ -843,17 +906,17 @@ const CreateRole = ({ }) => {
                             },
                           ]}
                         >
-                          <Input  />
+                          <Input />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
                   </Col>
 
                   <Col md={10}>
-      
+
                     {
-                        !isEdit && (
-                          <Form.Item
+                      !isEdit && (
+                        <Form.Item
                           name="dateEndString"
                           label="Ngày kết thúc khám"
                           rules={[
@@ -865,12 +928,12 @@ const CreateRole = ({ }) => {
                         >
                           <Calendar placeholder="Chọn ngày" />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
 
-                      {
-                        isEdit && (
-                          <Form.Item
+                    {
+                      isEdit && (
+                        <Form.Item
                           name="dateEnd"
                           label="Ngày kết thúc khám"
                           rules={[
@@ -880,10 +943,10 @@ const CreateRole = ({ }) => {
                             },
                           ]}
                         >
-                          <Input  />
+                          <Input />
                         </Form.Item>
-                        )
-                      }
+                      )
+                    }
                   </Col>
                   <Col md={10}>
                     <Form.Item
@@ -898,7 +961,7 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="userId "
-                        defaultValue={userItem[0]?.name}
+
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -916,37 +979,37 @@ const CreateRole = ({ }) => {
                     </Form.Item>
                   </Col>
                   {!isEdit && (
-                  <Col md={10}>
-                  
-                         <Form.Item
+                    <Col md={10}>
 
-                         label="Nhóm dịch vụ"
-                         rules={[
-                           {
-                             required: true,
-                             message: "Vui lòng nhập tên danh mục",
-                           },
-                         ]}
-                       >
-                         <Select
-                           showSearch
-                           style={{ width: 200 }}
-                           optionFilterProp="children"
-                           onChange={(value) => loadDataProduct(value)}
-                           filterOption={(input, option) =>
-                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                           }
-                         >
-                           {categoryItem.map((item) => (
-                             <Option key={item.id} value={item.id}>
-                               {item.name}
-                             </Option>
-                           ))}
-                         </Select>
-                       </Form.Item>
-                
-                  </Col>
-                   )
+                      <Form.Item
+
+                        label="Nhóm dịch vụ"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập tên danh mục",
+                          },
+                        ]}
+                      >
+                        <Select
+                          showSearch
+                          style={{ width: 200 }}
+                          optionFilterProp="children"
+                          onChange={(value) => loadDataProduct(value)}
+                          filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          }
+                        >
+                          {categoryItem.map((item) => (
+                            <Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+
+                    </Col>
+                  )
                   }
                   <Col md={10}>
                     <Form.Item
@@ -954,7 +1017,7 @@ const CreateRole = ({ }) => {
                       label="Dịch vụ"
                       rules={[
                         {
-                          required: false,
+                          required: true,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -1015,138 +1078,144 @@ const CreateRole = ({ }) => {
           </Col>
 
           <Col span={24} className="mt-4">
-                {
-                  !isEdit && (
-                    <Card title="Danh sách thuốc">
-                    <Row gutter={12}>
-                      <Col md={12}>
-                        {loading ? (
-                          <Spin />
-                        ) : (
-                          <Table
-                            dataSource={drugs.items}
-                            pagination={false}
-                            columns={[
-                              {
-                                title: "STT",
-                                dataIndex: "id",
-                              },
-                              {
-                                title: "Tên thuốc",
-                                dataIndex: "name",
-                              },
-      
-                              {
-                                title: "Loại thuốc",
-                                dataIndex: "loaiThuoc",
-                                render: (text, record) => (
-                                  <>
-                                    {
-                                      typeDrugs[text]
-                                    }
-                                  </>
-                                ),
-                              },
-                              {
-                                title: "Công dụng",
-                                dataIndex: "duongDung",
-                                render: (text, record) => (
-                                  <>
-                                    {
-                                      usageDrugs[text]
-                                    }
-                                  </>
-                                ),
-                              },
-                              {
-                                title: "Hành động",
-                                width: 150,
-                                render: (_, record) => (
-                                  <div className="text-center">
-                                    {loadingRow == record.id ? (
-                                      <Spin />
-                                    ) : (
-                                      <Space size="middle">
-      
-                                        <a
-                                          className="text-blue-400 text-center"
-                                          onClick={() => pushData(record)
-                                          }
-                                        >
-                                          +
-                                        </a>
-      
-      
-                                      </Space>
-                                    )}
-                                  </div>
-                                ),
-                              },
-                            ]}
-      
-                          // footer={() => `Tổng số danh mục ${pagination.total}`}
-                          // onChange={handleTableChange}
-                          ></Table>
-                        )}
-                      </Col>
-      
-                      <Col md={12}>
-                        {loading ? (
-                          <Spin />
-                        ) : (
-                          <Table
-                            dataSource={details}
-                            pagination={false}
-                            columns={[
-                              {
-                                title: "STT",
-                                dataIndex: "drugId",
-                              },
-                              {
-                                title: "Tên thuốc",
-                                dataIndex: "amout",
-                              },
-      
-                              {
-                                title: "Giá",
-                                dataIndex: "price",
-                              },
-                              {
-                                title: "Số lượng",
-                                dataIndex: "quantity",
-                                render: (quantity) => quantity
-                              },
-      
-                            ]}
-                            loading={loading}
-      
-                          ></Table>
-                        )}
-                            Tổng cộng  {totalAmount}
-                      </Col>
-      
-                    
-      
-                    </Row>
-      
-                   
-                  </Card>
-                  )
-                }
-
-                {
-                  isEdit && (
-                    <Card title="Danh sách thuốc">
-                    <Row gutter={12}>
-                      <Col md={12}>
-                        {loading ? (
-                          <Spin />
-                        ) : (
-                          <Form.Item
-                      name="listDrugs"
-                    >
+            {
+              !isEdit && (
+                <Card title="Danh sách thuốc">
+                  <Row gutter={12}>
+                    <Col md={12}>
+                      {loading ? (
+                        <Spin />
+                      ) : (
                         <Table
-                           
+                          dataSource={drugs.items}
+                          pagination={false}
+                          columns={[
+                            {
+                              title: "STT",
+                              dataIndex: "id",
+                            },
+                            {
+                              title: "Tên thuốc",
+                              dataIndex: "name",
+                            },
+
+                            {
+                              title: "Loại thuốc",
+                              dataIndex: "loaiThuoc",
+                              render: (text, record) => (
+                                <>
+                                  {
+                                    typeDrugs[text]
+                                  }
+                                </>
+                              ),
+                            },
+                            {
+                              title: "Đường dùng",
+                              dataIndex: "duongDung",
+                              render: (text, record) => (
+                                <>
+                                  {
+                                    usageDrugs[text]
+                                  }
+                                </>
+                              ),
+                            },
+                            {
+                              title: "Số lượng",
+                              render: (text, record) =>
+                                <InputNumber min={1} max={10000} defaultValue={1} onChange={onChangeNumber} />
+                            },
+                            {
+                              title: "Hành động",
+                              width: 150,
+                              render: (_, record) => (
+                                <div className="text-center">
+                                  {loadingRow == record.id ? (
+                                    <Spin />
+                                  ) : (
+                                    <Space size="middle">
+
+                                      <a
+                                        className="text-blue-400 text-center"
+                                        onClick={() => pushData(record)
+                                        }
+                                      >
+                                        +
+                                      </a>
+
+
+                                    </Space>
+                                  )}
+                                </div>
+                              ),
+                            },
+                          ]}
+
+                        // footer={() => `Tổng số danh mục ${pagination.total}`}
+                        // onChange={handleTableChange}
+                        ></Table>
+                      )}
+                    </Col>
+
+                    <Col md={12}>
+                      {loading ? (
+                        <Spin />
+                      ) : (
+                        <Table
+                          dataSource={details}
+                          pagination={false}
+                          columns={[
+                            {
+                              title: "STT",
+                              dataIndex: "drugId",
+                            },
+                            {
+                              title: "Giá",
+                              dataIndex: "price",
+                              render: (price) => formatMoney(price) + " VNĐ"
+                            },
+                            {
+                              title: "Số lượng",
+                              dataIndex: "quantity",
+                              render: (quantity) => quantity
+                            },
+                            {
+                              title: "Thành tièn",
+                              dataIndex: "amout",
+                              render: (amout) => formatMoney(amout) + " VNĐ"
+                            },
+
+                          ]}
+                          loading={loading}
+
+                        ></Table>
+                      )}
+                      <h2 className="font-bold mt-3">Tổng cộng  {formatMoney(totalAmount) + " VNĐ" } </h2> 
+                    </Col>
+
+
+
+                  </Row>
+
+
+                </Card>
+              )
+            }
+
+            {
+              isEdit && (
+                <Card title="Danh sách thuốc">
+                  <Row gutter={12}>
+                    <Col md={12}>
+                      {loading ? (
+                        <Spin />
+                      ) : (
+                        <Form.Item
+                          name="listDrugs"
+                        >
+                          <Table
+
                             dataSource={detailsDrugs}
                             pagination={false}
                             columns={[
@@ -1165,8 +1234,8 @@ const CreateRole = ({ }) => {
                                 dataIndex: "drug",
                                 render: (drug) => drug.congDung,
                               },
-      
-      
+
+
                               {
                                 title: "Giá",
                                 dataIndex: "price",
@@ -1176,52 +1245,52 @@ const CreateRole = ({ }) => {
                                 dataIndex: "quantity",
                                 render: (quantity) => quantity
                               },
-      
+
                             ]}
                             loading={loading}
-      
+
                           ></Table>
-                    </Form.Item>
-                        
-                        )}
-                            Tổng cộng  {totalAmount ? totalAmount : "10000"}
-                      </Col>
-                    </Row>
-      
-                   
-                  </Card>
-                  )
-                }
-           
-          </Col>
-              {
-                !isEdit && ( <Col span={8} className="mt-4">
-                <Card title="Hành động">
-                  {saveLoading ? (
-                    <Spin />
-                  ) : (
-                    <Space>
-                      <Button
-                        disabled={loading}
-                        type="primary"
-                        className="bg-slate-600 text-white"
-                        htmlType="submit"
-                      >
-                        Lưu lại
-                      </Button>
-                      <Button
-                        type="default"
-                        className="bg-red-500 text-white"
-                        onClick={() => navigate("/category/" + applyFor)}
-                      >
-                        Huỷ bỏ
-                      </Button>
-                    </Space>
-                  )}
+                        </Form.Item>
+
+                      )}
+                      Tổng cộng  {totalAmount ? totalAmount : "10000"}
+                    </Col>
+                  </Row>
+
+
                 </Card>
-              </Col>)
-              }
-          
+              )
+            }
+
+          </Col>
+          {
+            !isEdit && (<Col span={8} className="mt-4">
+              <Card title="Hành động">
+                {saveLoading ? (
+                  <Spin />
+                ) : (
+                  <Space>
+                    <Button
+                      disabled={loading}
+                      type="primary"
+                      className="bg-slate-600 text-white"
+                      htmlType="submit"
+                    >
+                      Lưu lại
+                    </Button>
+                    <Button
+                      type="default"
+                      className="bg-red-500 text-white"
+                      onClick={() => navigate("/category/" + applyFor)}
+                    >
+                      Huỷ bỏ
+                    </Button>
+                  </Space>
+                )}
+              </Card>
+            </Col>)
+          }
+
         </Row>
 
       </Form>

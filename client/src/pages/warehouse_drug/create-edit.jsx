@@ -14,7 +14,8 @@ import {
   DatePicker,
   Divider,
   Table,
-  Switch
+  Switch,
+  InputNumber
 } from "antd";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -162,6 +163,8 @@ const CreateRole = ({ }) => {
 
   const [details, setDetails] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [quantityDrugs, setquantityDrugs] = useState(1);
+
 
 
   useEffect(() => {
@@ -171,6 +174,10 @@ const CreateRole = ({ }) => {
     setTotalAmount(total);
   }, [details])
  
+  const onChangeNumber = (value) => {
+    console.log('changed',value );
+    setquantityDrugs(value)
+  };
 
   const pushData = (record) => {
 
@@ -189,7 +196,7 @@ const CreateRole = ({ }) => {
         {
           drugId: record.id,
           name: record.name,
-          quantity: 1,
+          quantity: quantityDrugs,
         }
       )
       setDetails(newDetails);
@@ -381,6 +388,11 @@ const CreateRole = ({ }) => {
                         {
                           title: "Tên thuốc",
                           dataIndex: "name",
+                        },
+                        {
+                          title: "Số lượng",
+                          render: (text, record) =>
+                          <InputNumber min={1} max={10000} defaultValue={1} onChange={onChangeNumber} />
                         },
                         {
                           title: "Hành động",

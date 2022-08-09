@@ -276,7 +276,6 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="type"
-                        defaultValue={companyTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"

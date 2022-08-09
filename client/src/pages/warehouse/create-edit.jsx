@@ -162,7 +162,6 @@ const CreatWareHouse = ({ }) => {
                     >
                       <Select
                         name="type"
-                        defaultValue={wareHouseTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"

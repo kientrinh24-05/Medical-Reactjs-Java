@@ -191,7 +191,6 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="departmentCodeBC"
-                        defaultValue={departmentCodeBCs[0]?.code}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -220,7 +219,6 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="departmentType"
-                        defaultValue={departmentTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -249,7 +247,6 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="roomType"
-                        defaultValue={roomTypes[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -278,7 +275,6 @@ const CreateRole = ({ }) => {
                     >
                       <Select
                         name="level"
-                        defaultValue={Levels[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"

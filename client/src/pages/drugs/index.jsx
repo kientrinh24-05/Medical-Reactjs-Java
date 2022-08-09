@@ -18,6 +18,7 @@ import { useRecoilValue } from "recoil";
 import { drugsAtom } from "@/_state";
 import { usePrugsActions } from "@/_actions";
 import { useDebounce } from "@/lib/hook";
+import { formatMoney } from "../../utils/helper";
 
 export const convertTypeToInt = (applyFor) => {
     switch (applyFor) {
@@ -196,6 +197,7 @@ const DrugsPage = ({ ...props }) => {
                         {
                             title: "Giá thuốc",
                             dataIndex: "price",
+                            render:(price) => formatMoney(price)+ ' VNĐ'
                         },
                         {
                             title: "Đơn vị tính",
@@ -224,7 +226,7 @@ const DrugsPage = ({ ...props }) => {
                             ),
                         },
                         {
-                            title: "Công dụng",
+                            title: "Đường dùng",
                             dataIndex: "duongDung",
                             render: (text, record) => (
                                 <>

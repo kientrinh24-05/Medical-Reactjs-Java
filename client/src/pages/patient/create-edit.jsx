@@ -37,9 +37,8 @@ const CreateRole = ({ }) => {
 
   const [objectTypes, setObjectTypes] = useState([
     { name: "Miễn phí" , code: 1 },
-    { name: "BYHT 80%" , code: 2 },
-    { name: "Thu phí" , code: 3 },
-    { name: "50% phí" , code: 4 },
+    { name: "Thu phí" , code: 2 },
+    { name: "BHYT" , code: 3 },
   ]);
   const [isPaids, setisPaids] = useState([
     { name: "Chưa thanh toán" , code: 0 },
@@ -189,7 +188,7 @@ const CreateRole = ({ }) => {
                       label="Số BYHT"
                       rules={[
                         {
-                          required: true,
+                          required: false,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}

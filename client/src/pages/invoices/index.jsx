@@ -18,6 +18,9 @@ import { useRecoilValue } from "recoil";
 import { invoicesAtom } from "@/_state";
 import { useInvoicesActions } from "@/_actions";
 import { useDebounce } from "@/lib/hook";
+import InvoicesMedical from "./invoices-medical";
+import ModalForm from "../../components/Modal";
+import { formatMoney } from "../../utils/helper";
 
 export const convertTypeToInt = (applyFor) => {
     switch (applyFor) {
@@ -40,6 +43,11 @@ const InvoicesPage = ({ ...props }) => {
     const canCreate = useRecoilValue(userCan("department.create"));
     const canDelete = useRecoilValue(userCan("department.delete"));
     const canEdit = useRecoilValue(userCan("department.update"));
+
+    const [visible, setVisible] = useState(false);
+    const [action, setAction] = useState("");
+    const [item, setItem] = useState(null);
+    const [itemId, setItemId] = useState(null);
 
     const [showCreate, setShowCreate] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -115,17 +123,17 @@ const InvoicesPage = ({ ...props }) => {
         <div>
             <PageHeader
                 title={"Danh mục hóa đơn dịch vụ"}
-                // extra={
-                //     !canCreate && (
-                //         <Button
-                //             onClick={() => navigate("/department/create")}
-                //             size="large"
-                //             className="bg-blue-500 text-white"
-                //         >
-                //             Thêm hóa đơn
-                //         </Button>
-                //     )
-                // }
+            // extra={
+            //     !canCreate && (
+            //         <Button
+            //             onClick={() => navigate("/department/create")}
+            //             size="large"
+            //             className="bg-blue-500 text-white"
+            //         >
+            //             Thêm hóa đơn
+            //         </Button>
+            //     )
+            // }
             />
             <Space style={{ marginBottom: 16 }}>
                 {/* <Input
@@ -137,7 +145,7 @@ const InvoicesPage = ({ ...props }) => {
             <Card>
                 <Table
                     dataSource={deparment.items}
-                    
+
                     columns={[
                         {
                             title: "STT",
@@ -162,13 +170,14 @@ const InvoicesPage = ({ ...props }) => {
                         {
                             title: "Giá dịch vụ",
                             dataIndex: "product",
-                            render: (product) => product.price,
+                            render: (product) => formatMoney(product.price) + " VNĐ",
                             key: "product"
                         },
 
                         {
                             title: "Tổng tiền",
                             dataIndex: "totalAmount",
+                            render: (totalAmount) => formatMoney(totalAmount) + " VNĐ",
                         },
                         {
                             title: "Trạng thái thanh toán",
@@ -220,13 +229,13 @@ const InvoicesPage = ({ ...props }) => {
                                         <Space size="middle">
 
                                             {!canDelete && (
-                                                
-                                                    <Button 
+
+                                                <Button
 
                                                     onClick={() =>
                                                         navigate(
                                                             "/medical_examination/create/edit/" +
-                                                                record.id
+                                                            record.id
                                                         )
                                                     }
                                                     type="primary" size="small">
@@ -234,21 +243,32 @@ const InvoicesPage = ({ ...props }) => {
                                                 </Button>
                                             )}
                                             {!canDelete && (
-                                                
-                                                <Popconfirm
-                                                    title="Bạn chắc chắn thanh toán chứ?"
-                                                    onConfirm={() =>
-                                                        invoicecomplete(record.id)
-                                                    }
-                                                >
 
-                                                    <Button
-                                                type="primary" size="small">
-                                                Thanh toán
+                                                // <Popconfirm
+                                                //     title="Bạn chắc chắn thanh toán chứ?"
+                                                //     onConfirm={() =>
+                                                //         invoicecomplete(record.id)
+                                                //     }
+                                                // >
+
+                                                //     <Button
+                                                // type="primary" size="small">
+                                                // Thanh toán
+                                                // </Button>
+                                                // </Popconfirm>
+                                                <Button
+
+                                                    onClick={() => {
+                                                        setVisible(true)
+                                                        setAction("add")
+                                                        setItemId(record.id)
+                                                        
+                                                    }}
+                                                    type="primary" size="small">
+                                                    Thanh toán
                                                 </Button>
-                                                </Popconfirm>
 
-                                                
+
                                             )}
                                             {!canEdit && (
                                                 <Popconfirm
@@ -256,12 +276,12 @@ const InvoicesPage = ({ ...props }) => {
                                                     onConfirm={() =>
                                                         invoicecancel(record.id)
                                                     }
-                                                >   
-                                                  <Button
-                                                type="secondary" size="small">
-                                                    Hủy đơn
-                                                </Button>
-                                    
+                                                >
+                                                    <Button
+                                                        type="secondary" size="small">
+                                                        Hủy đơn
+                                                    </Button>
+
                                                 </Popconfirm>
                                             )}
                                         </Space>
@@ -278,6 +298,27 @@ const InvoicesPage = ({ ...props }) => {
             {showCreate && (
                 <CreateRole show onClose={() => setShowCreate(false)} />
             )}
+
+            {
+                visible &&
+                (
+                    <ModalForm
+                        title={action === "add" ? "Hóa đơn" : "Sửa Lớp học"}
+                        width={1000}
+                        visible={visible}
+                        onCancel={() => {
+                            setVisible(false)
+                            setAction("")
+                            setItem(null)
+                        }}
+                        footer={null}
+                    >
+                        <div>
+                            <InvoicesMedical idEdit={itemId}  handleClose={() => setVisible(false)} />
+                        </div>
+                    </ModalForm>
+                )
+            }
         </div>
     );
 };

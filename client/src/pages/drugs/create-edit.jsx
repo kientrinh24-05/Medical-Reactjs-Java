@@ -219,13 +219,13 @@ const CreateRole = ({ }) => {
                       label="Loại thuốc"
                       rules={[
                         {
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
                     >
                       <Select
                         name="loaiThuoc"
-                        defaultValue={loaiThuocs[0]?.code}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -248,13 +248,13 @@ const CreateRole = ({ }) => {
                       label="Loại vật tư"
                       rules={[
                         {
+                          required:false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
                     >
                       <Select
                         name="loaiVatTu"
-                        defaultValue={loaiVatTus[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -277,13 +277,13 @@ const CreateRole = ({ }) => {
                       label="Đơn vị tính"
                       rules={[
                         {
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
                     >
                       <Select
                         name="donViTinh"
-                        defaultValue={donViTinhs[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
@@ -306,13 +306,13 @@ const CreateRole = ({ }) => {
                       label="Đường dụng"
                       rules={[
                         {
+                          required: false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
                     >
                       <Select
                         name="duongDung"
-                        defaultValue={duongDungs[0]?.name}
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"

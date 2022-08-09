@@ -208,7 +208,6 @@ const CreateRole = ({ }) => {
                                             >
                                                 <Select
                                                     name="type"
-                                                    defaultValue={levelCountrys[0]?.name}
                                                     showSearch
                                                     style={{ width: 200 }}
                                                     optionFilterProp="children"

@@ -18,6 +18,7 @@ import { useRecoilValue } from "recoil";
 import { productAtom } from "@/_state";
 import { useProductActions } from "@/_actions";
 import { useDebounce } from "@/lib/hook";
+import { formatMoney } from "../../utils/helper";
 
 export const convertTypeToInt = (applyFor) => {
     switch (applyFor) {
@@ -155,10 +156,12 @@ const ProductPage = ({ ...props }) => {
                         {
                             title: "Giá Tiền",
                             dataIndex: "price",
+                            render: (price) => formatMoney(price) + ' VNĐ'
                         },
                         {
                             title: "Giá BHYT",
                             dataIndex: "priceBHYT",
+                            render: (priceBHYT) => formatMoney(priceBHYT) + ' VNĐ'
                         },
                         {
                             title: "Trạng thái",

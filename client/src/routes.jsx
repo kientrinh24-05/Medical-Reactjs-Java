@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { QqCircleFilled, BarsOutlined ,FallOutlined } from "@ant-design/icons";
+import { UserOutlined, NodeIndexOutlined  ,WalletOutlined  } from "@ant-design/icons";
 
 const routes = [
     {
@@ -15,8 +15,8 @@ const routes = [
         component: lazy(() => import("@/pages/testcontrols")),
     },
     {
-        title: "Công cụ quản trị",
-        icon: <QqCircleFilled />,
+        title: "Quản trị hệ thống",
+        icon: <UserOutlined />,
         path: "",
         childs: [
             {
@@ -43,7 +43,7 @@ const routes = [
                 ],
             },
             {
-                title: "Quản lý thuốc",
+                title: "Quản lý dược phẩm bệnh viện",
                 path: "drugs",
                 component: lazy(() => import("@/pages/drugs")),
                 childs: [
@@ -182,32 +182,34 @@ const routes = [
                     },
                 ],
             },
+
+
             {
-                title: "Quản lý bệnh nhân",
-                path: "patient",
-                component: lazy(() => import("@/pages/patient")),
+                title: "Quản lý nhân viên",
+                path: "employe",
+                component: lazy(() => import("@/pages/employe")),
                 childs: [
                     {
                         path: "create",
                         component: lazy(() =>
-                            import("@/pages/patient/create-edit")
+                            import("@/pages/employe/create-edit")
                         ),
-                        title: "Thêm bệnh nhân",
+                        title: "Thêm nhân viên",
                         hidden: true,
                     },
                     {
                         path: "edit/:id",
                         component: lazy(() =>
-                            import("@/pages/patient/create-edit")
+                            import("@/pages/employe/create-edit")
                         ),
-                        title: "Cập nhật bệnh nhân",
+                        title: "Cập nhật nhân viên",
                         hidden: true,
                     },
                 ],
             },
 
             {
-                title: "Quản người dùng",
+                title: "Quản lý người dùng",
                 path: "user",
                 component: lazy(() => import("@/pages/user")),
                 childs: [
@@ -233,10 +235,33 @@ const routes = [
     },
 
     {
-        title: "Danh mục khám bệnh",
-        icon: <FallOutlined />,
+        title: "Khám bệnh",
+        icon: <NodeIndexOutlined />,
         path: "",
         childs: [
+            {
+                title: "Danh sách bệnh nhân",
+                path: "patient",
+                component: lazy(() => import("@/pages/patient")),
+                childs: [
+                    {
+                        path: "create",
+                        component: lazy(() =>
+                            import("@/pages/patient/create-edit")
+                        ),
+                        title: "Thêm bệnh nhân",
+                        hidden: true,
+                    },
+                    {
+                        path: "edit/:id",
+                        component: lazy(() =>
+                            import("@/pages/patient/create-edit")
+                        ),
+                        title: "Cập nhật bệnh nhân",
+                        hidden: true,
+                    },
+                ],
+            },
             {
                 title: "Khám bệnh",
                 path: "medical_examination/create",
@@ -286,6 +311,14 @@ const routes = [
                     },
                 ],
             },
+        ],
+    },
+
+    {
+        title: "Kho dược",
+        icon: <WalletOutlined />,
+        path: "",
+        childs: [
             {
                 title: "Quản lý kho thuốc",
                 path: "warehouse_drug",

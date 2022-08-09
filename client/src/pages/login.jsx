@@ -1,7 +1,7 @@
 import { Form, Input, Button, Checkbox, Card, message, Space } from "antd";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-import logo from "@/assets/images/logo-color.png";
+import logo from "@/assets/images/logo-login.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUserActions } from "@/_actions";
 const LoginPage = () => {
@@ -26,7 +26,7 @@ const LoginPage = () => {
     return (
         <div>
             <div
-                className="bg-[url('@/assets/images/admin-bg.png')]
+                className="bg-[url('@/assets/images/bg_3.jpg')]
                 bg-slate-500
                 opacity-60 fixed top-0 left-0 w-full h-full z-1"
             ></div>
@@ -35,56 +35,13 @@ const LoginPage = () => {
                     "container px-4 max-w-7xl z-10 flex h-3/4  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 }
             >
-                <div className="flex-1 hidden md:block bg-white px-16 pt-10 rounded-l-xl">
+                <div className="flex-1 hidden md:block  px-16 pt-10 rounded-l-xl">
                     <img className="block mx-auto" src={logo} alt="logo" />
-                    <div className="mt-32">
-                        <h2 className="text-blue-500 font-bold text-3xl mb-3">
-                            Check the Status
-                        </h2>
-                        <p className="mb-5">
-                            It is a long established fact that a reader will be
-                            distracted by the readable content of a page when
-                            looking at its layout. The point of using Lorem
-                            Ipsum is that it has a more-or-less normal
-                            distribution of letters,
-                        </p>
-                        <Space size={"middle"}>
-                            <a
-                                href="#"
-                                className="pt-1 hover:text-blue-500 text-blue-500 "
-                            >
-                                <FontAwesomeIcon
-                                    size="2x"
-                                    icon="fa-brands fa-facebook-f"
-                                />
-                            </a>
-
-                            <a
-                                href="#"
-                                className="pt-1 hover:text-blue-500 text-blue-500 "
-                            >
-                                <FontAwesomeIcon
-                                    size="2x"
-                                    icon="fa-brands fa-twitter"
-                                />
-                            </a>
-
-                            <a
-                                href="#"
-                                className="pt-1 hover:text-blue-500 text-blue-500 "
-                            >
-                                <FontAwesomeIcon
-                                    size="2x"
-                                    icon="fa-brands fa-telegram"
-                                />
-                            </a>
-                        </Space>
-                    </div>
                 </div>
                 <div className="flex-1 px-16  rounded-r-xl relative">
                     <div className="w-1/2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                         <h1 className="text-2xl font-bold text-white ">
-                            Welcome to Jira
+                            Welcome to Medical App
                         </h1>
                         <h2 className=" text-md font-semibold text-white">
                             Sign in by entering information below
