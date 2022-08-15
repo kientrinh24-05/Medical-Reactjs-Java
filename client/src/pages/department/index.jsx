@@ -106,6 +106,13 @@ const DepartmentPage = ({ ...props }) => {
         4: 'Khoa xét nghiệm',
         5: 'Khoa chẩn đoán hình ảnh'
     }
+    
+    var number = {
+        1: 'Khoa sản',
+        2: 'Khoa tai mũi họng',
+        3: 'Khoa răng hàm mặt',
+        4: 'Khoa da liễu',
+    }
  
 
     return (
@@ -140,14 +147,23 @@ const DepartmentPage = ({ ...props }) => {
                             dataIndex: "id",
                         },
                         {
-                            title: "Mã phòng ban",
+                            title: "Mã",
                             dataIndex: "code",
                         },
                         {
-                            title: "Tên phòng ban",
+                            title: "Tên",
                             dataIndex: "name",
-                            width:"500px",
-                            sorter: true
+                        },
+                        {
+                            title: "Khoa",
+                            dataIndex: "khoa",
+                            render: (text, record) => (
+                                <>
+                                    {
+                                        number[text]
+                                    }
+                                </>
+                            ),  
                         },
                         {
                             title: "Cấp",
@@ -218,7 +234,7 @@ const DepartmentPage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
-                    footer={() => `Tổng số danh mục ${pagination.total}`}
+                    footer={() => `Tổng số danh mục ${deparment.items.length}`}
                     onChange={handleTableChange}
                 ></Table>
             </Card>

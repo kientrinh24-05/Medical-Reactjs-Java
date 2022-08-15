@@ -74,6 +74,18 @@ const PatientPage = ({ ...props }) => {
         setPagination(pagination);
     };
 
+
+
+    var objType = {
+        1: 'Miễn phí',
+        2: 'Thu phí',
+        3: 'BHYT',
+    }
+
+   
+  
+
+
     const loadData = async () => {
         setLoading(true);
         await actions.getList({
@@ -155,7 +167,7 @@ const PatientPage = ({ ...props }) => {
                                 dataIndex: "gender",
                                 render: (text, record) => (
                                     <>
-                                      {record.gender == 1 ? (
+                                      {record.gender == 0 ? (
                                         "Nam"
                                       ) : (
                                         "Nữ"
@@ -170,23 +182,17 @@ const PatientPage = ({ ...props }) => {
                         {
                             title: "Đối tượng",
                             dataIndex: "objectType",
+                            render: (text, record) => (
+                                <>
+                                    {
+                                        objType[text]
+                                    }
+                                </>
+                            ),
                         },
                         {
                             title: "Số BHYT",
                             dataIndex: "cardNumber",
-                        },
-                        {
-                            title: "Trạng thái",
-                            dataIndex: "isPaid",
-                            render: (text, record) => (
-                                <>
-                                  {record.isPaid == 1 ? (
-                                    <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Đã thanh toán</span>
-                                  ) : (
-                                    <span class="bg-pink-100 text-pink-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-pink-200 dark:text-pink-900">Chưa thanh toán</span>
-                                  )}
-                                </>
-                            ),
                         },
                         {
                             title: "Hành động",
@@ -229,7 +235,7 @@ const PatientPage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
-                    footer={() => `Tổng số danh mục ${pagination.total}`}
+                    footer={() => `Tổng số bệnh nhân  ${deparment.items.length}`}
                     onChange={handleTableChange}
                 ></Table>
             </Card>

@@ -7,7 +7,9 @@ import {
     Popconfirm,
     Spin,
     Input,
-    message
+    message,
+    Select,
+    Col
 } from "antd";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -40,6 +42,7 @@ const WareHouseDrug = ({ ...props }) => {
     const canCreate = useRecoilValue(userCan("department.create"));
 
     const [showCreate, setShowCreate] = useState(false);
+    const [dataItemsWareHouse, setDataItemsWareHouse] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingRow, setLoadingRow] = useState(null);
     const deparment = useRecoilValue(warehousedrugAtom);
@@ -50,6 +53,7 @@ const WareHouseDrug = ({ ...props }) => {
     };
 
     const [search, setSearch] = useState(null);
+    const [Idwarehouse, setIdwarehouse] = useState(0);
     const debouncedSearchQuery = useDebounce(search, 600);
     useEffect(() => {
         setFilter({ ...filter, search });
@@ -61,7 +65,7 @@ const WareHouseDrug = ({ ...props }) => {
         total: deparment.total,
     });
 
-    console.log(pagination , 'pagination');
+    console.log(pagination, 'pagination');
 
     const handleTableChange = (pagination, filters, sorter) => {
         setPagination(pagination);
@@ -76,6 +80,14 @@ const WareHouseDrug = ({ ...props }) => {
 
         setLoading(false);
     };
+
+    const loadDataWareHouse = async (id) => {
+        setIdwarehouse(id);
+        await actions.getListDetail(Idwarehouse).then(data => {
+            deparment.items = data.data.data.content;
+        });
+          
+      }
 
     useEffect(() => {
         loadData();
@@ -104,7 +116,26 @@ const WareHouseDrug = ({ ...props }) => {
                         </Button>
                     )
                 }
+
             />
+            <Col className="mb-3" md={10}>
+                <label className="mr-3 font-bold"> Vui lòng chọn kho </label>
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        optionFilterProp="children"
+                        onChange={(value) => loadDataWareHouse(value)}
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                    >
+                        {deparment.items.map((item) => (
+                            <Option key={item.id} value={item.id}>
+                                {item.wareHouse.name}
+                            </Option>
+                        ))}
+                    </Select>
+            </Col>
             <Card>
                 <Table
                     dataSource={deparment.items}
@@ -133,11 +164,11 @@ const WareHouseDrug = ({ ...props }) => {
                             dataIndex: "description",
                             render: (text, record) => (
                                 <>
-                                  {record.status == 1 ? (
-                                    <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Đang hoạt động</span>
-                                  ) : (
-                                    <span class="bg-pink-100 text-pink-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-pink-200 dark:text-pink-900">Ngưng hoạt động</span>
-                                  )}
+                                    {record.status == 1 ? (
+                                        <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Đang hoạt động</span>
+                                    ) : (
+                                        <span class="bg-pink-100 text-pink-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-pink-200 dark:text-pink-900">Ngưng hoạt động</span>
+                                    )}
                                 </>
                             ),
                         },
@@ -146,6 +177,8 @@ const WareHouseDrug = ({ ...props }) => {
                     footer={() => `Tổng số danh mục ${pagination.total}`}
                     onChange={handleTableChange}
                 ></Table>
+
+            
             </Card>
             {showCreate && (
                 <CreateRole show onClose={() => setShowCreate(false)} />

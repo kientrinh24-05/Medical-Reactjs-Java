@@ -64,7 +64,7 @@ const DrugsPage = ({ ...props }) => {
         total: deparment.total,
     });
 
-    console.log(pagination , 'pagination');
+    console.log(deparment.items.length , 'deparment.items');
 
     const handleTableChange = (pagination, filters, sorter) => {
         setPagination(pagination);
@@ -290,7 +290,7 @@ const DrugsPage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
-                    footer={() => `Tổng số danh mục ${pagination.total}`}
+                    footer={() => `Tổng số danh mục ${deparment.items.length}`}
                     onChange={handleTableChange}
                 ></Table>
             </Card>

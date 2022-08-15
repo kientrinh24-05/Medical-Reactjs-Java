@@ -117,7 +117,7 @@ const CreateRole = ({ }) => {
       >
 
         <Row gutter={12}>
-          <Col span={16}>
+          <Col span={18}>
             <Card title="Thông tin">
               {loading ? (
                 <Spin />
@@ -126,7 +126,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="code"
-                      label="Mã nhà cung cấp"
+                      label="Mã nhà CC"
                       rules={[
                         {
                           required: true,
@@ -140,7 +140,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="name"
-                      label="Tên nhà cung cấp"
+                      label="Tên nhà CC"
                       rules={[
                         {
                           required: true,
@@ -316,7 +316,7 @@ const CreateRole = ({ }) => {
                   <Button
                     type="default"
                     className="bg-red-500 text-white"
-                    onClick={() => navigate("/category/" + applyFor)}
+                    onClick={() => navigate("/supplier/" + applyFor)}
                   >
                     Huỷ bỏ
                   </Button>

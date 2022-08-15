@@ -1,5 +1,4 @@
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
-
 import { warehousedrugAtom } from '@/_state';
 export { useWareHouseDrugActions };
 
@@ -7,9 +6,10 @@ function useWareHouseDrugActions() {
     const setDepartment = useSetRecoilState(warehousedrugAtom);
     return {
         getList,
-        show,
         update,
+        getListDetail,
         search,
+        show,
         invoiceComplete,
         invoiceCancel,
         create,
@@ -31,6 +31,15 @@ function useWareHouseDrugActions() {
             searchKey: filter
         });
     }
+
+    function getListDetail(warehouseId) {
+        return axios.post("/api/v1/departments/department_get_list_paging_sort_search_filter", {
+            pageNumber: 10,
+            pageSize: 1000,
+            warehouseId
+        });
+    }
+
 
     function show(id) {
         return axios.get("/api/v1/invoices/invoice_get_detail/" + id);

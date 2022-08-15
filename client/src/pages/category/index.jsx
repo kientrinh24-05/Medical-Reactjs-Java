@@ -193,7 +193,7 @@ const CategoryPage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
-                    footer={() => `Tổng số danh mục 10`}
+                    footer={() => `Tổng số danh mục ${category.items.length}`}
                     onChange={handleTableChange}
                 ></Table>
             </Card>

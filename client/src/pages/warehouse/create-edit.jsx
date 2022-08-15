@@ -203,7 +203,7 @@ const CreatWareHouse = ({ }) => {
                   <Button
                     type="default"
                     className="bg-red-500 text-white"
-                    onClick={() => navigate("/category/" + applyFor)}
+                    onClick={() => navigate("/warehouse/" + applyFor)}
                   >
                     Huỷ bỏ
                   </Button>

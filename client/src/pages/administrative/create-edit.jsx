@@ -153,7 +153,7 @@ const CreateRole = ({ }) => {
                                         <Col md={10}>
                                             <Form.Item
                                                 name="shortName"
-                                                label="Ten viết tắt"
+                                                label="Tên viết tắt"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -169,7 +169,7 @@ const CreateRole = ({ }) => {
                                         <Col md={10}>
                                             <Form.Item
                                                 name="fullName"
-                                                label="Ten đầy đủ"
+                                                label="Tên đầy đủ"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -249,7 +249,7 @@ const CreateRole = ({ }) => {
                                     <Button
                                         type="default"
                                         className="bg-red-500 text-white"
-                                        onClick={() => navigate("/department")}
+                                        onClick={() => navigate("/administrative")}
                                     >
                                         Huỷ bỏ
                                     </Button>

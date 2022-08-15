@@ -303,7 +303,7 @@ const CreateRole = ({ }) => {
                   <Col md={10}>
                     <Form.Item
                       name="duongDung"
-                      label="Đường dụng"
+                      label="Đường dùng"
                       rules={[
                         {
                           required: false,

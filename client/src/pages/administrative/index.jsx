@@ -72,11 +72,11 @@ const DepartmentPage = ({ ...props }) => {
                     columns={[
 
                         {
-                            title: "Mã Phòng ban",
+                            title: "Mã",
                             dataIndex: "code",
                         },
                         {
-                            title: "Tên Phòng ban",
+                            title: "Tên",
                             dataIndex: "name",
                         },
                         {

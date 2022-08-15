@@ -190,7 +190,7 @@ const CreateEditUser = ({}) => {
                                         <Input />
                                     </Form.Item>
                                     <Form.Item
-                                        name="username"
+                                        name="username-fake"
                                         label="Username"
                                         rules={[
                                             {
@@ -203,7 +203,7 @@ const CreateEditUser = ({}) => {
                                         <Input />
                                     </Form.Item>
                                         <Form.Item
-                                            name="password"
+                                            name="password-fake"
                                             label="Mật khẩu"
                                             rules={[
                                                 {
@@ -216,7 +216,7 @@ const CreateEditUser = ({}) => {
                                             <Input type={"password"}/>
                                         </Form.Item>
                                     <Form.Item
-                                        name="address"
+                                        name="address-fake"
                                         label="Địa chỉ"
                                         rules={[
                                             {
@@ -264,7 +264,7 @@ const CreateEditUser = ({}) => {
                                         <Input />
                                     </Form.Item>
 
-                                    <Form.Item name="role" label="Quyền truy cập">
+                                    <Form.Item name="role-fake" label="Quyền truy cập">
                                         <Select
                                             options={[
                                                 { label: "Admin", value: 1 },
@@ -538,7 +538,7 @@ const CreateEditUser = ({}) => {
                                     <Button
                                         type="default"
                                         className="bg-red-500 text-white"
-                                        onClick={() => navigate("/user")}
+                                        onClick={() => navigate("/employe")}
                                     >
                                         Huỷ bỏ
                                     </Button>

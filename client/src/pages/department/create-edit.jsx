@@ -51,6 +51,13 @@ const CreateRole = ({ }) => {
     { name: "Phòng dịch vụ 1"  , code: 2},
     { name: "Phòng dịch vụ 2" , code: 3 }
   ]);
+
+  const [numbers, setNumbers] = useState([
+    { name: "Khoa sản" , code: 1 },
+    { name: "Khoa tai mũi họng"  , code: 2},
+    { name: "Khoa răng hàm mặt" , code: 3 },
+    { name: "Khoa da liễu" , code: 4 },
+  ]);
   const [Levels, setLevels] = useState([
     { name: 1 },
     { name: 2 },
@@ -60,6 +67,7 @@ const CreateRole = ({ }) => {
   const [departmentCodeBC, setDepartmentCodeBC] = useState(departmentCodeBCs[0]?.code);
   const [departmentType, setDepartmentType] = useState(departmentTypes[0]?.name);
   const [roomType, setRoomType] = useState(roomTypes[0]?.name);
+  const [number, setNumber] = useState(numbers[0]?.name);
   const [level, setLevel] = useState(Levels[0]?.name);
 
 
@@ -145,7 +153,7 @@ const CreateRole = ({ }) => {
       >
 
         <Row gutter={12}>
-          <Col span={16}>
+          <Col span={18}>
             <Card title="Thông tin">
               {loading ? (
                 <Spin />
@@ -185,6 +193,7 @@ const CreateRole = ({ }) => {
                       label="Mã BC BHYT"
                       rules={[
                         {
+                          required:false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -213,6 +222,7 @@ const CreateRole = ({ }) => {
                       label="Loại phòng ban"
                       rules={[
                         {
+                          required:false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -235,12 +245,43 @@ const CreateRole = ({ }) => {
                       </Select>
                     </Form.Item>
                   </Col>
+
+                  <Col md={10}>
+                    <Form.Item
+                      name="khoa"
+                      label="Khoa"
+                      rules={[
+                        {
+                          required: false,
+                          message: "Vui lòng nhập tên khoa",
+                        },
+                      ]}
+                    >
+                      <Select
+                        name="khoa"
+                        showSearch
+                        style={{ width: 200 }}
+                        optionFilterProp="children"
+                      onChange={(value) => setNumber(value)}
+                      filterOption={(input, option) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      >
+                        {numbers.map((item) => (
+                          <Option key={item.code} value={item.code}>
+                            {item.name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
                   <Col md={10}>
                     <Form.Item
                       name="roomType"
-                      label="Loại phòng ban"
+                      label="Loại phòng bệnh"
                       rules={[
                         {
+                          required:false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -269,6 +310,7 @@ const CreateRole = ({ }) => {
                       label="Cấp"
                       rules={[
                         {
+                          required:false,
                           message: "Vui lòng nhập tên danh mục",
                         },
                       ]}
@@ -314,7 +356,7 @@ const CreateRole = ({ }) => {
                   <Button
                     type="default"
                     className="bg-red-500 text-white"
-                    onClick={() => navigate("/category/" + applyFor)}
+                    onClick={() => navigate("/deparment/" + applyFor)}
                   >
                     Huỷ bỏ
                   </Button>

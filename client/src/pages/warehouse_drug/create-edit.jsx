@@ -484,8 +484,8 @@ const CreateRole = ({ }) => {
                   <Button
                     type="default"
                     className="bg-red-500 text-white"
-                    onClick={() => navigate("/category/" + applyFor)}
-                  >
+                    onClick={() => navigate("/warehouse_drug/" + applyFor)}
+                  >ư
                     Huỷ bỏ
                   </Button>
                 </Space>

@@ -20,7 +20,7 @@ const routes = [
         path: "",
         childs: [
             {
-                title: "Quản lý dịch vụ",
+                title: "Danh mục dịch vụ",
                 path: "product",
                 component: lazy(() => import("@/pages/product")),
                 childs: [
@@ -43,7 +43,7 @@ const routes = [
                 ],
             },
             {
-                title: "Quản lý dược phẩm bệnh viện",
+                title: "Danh mục dược phẩm bệnh viện",
                 path: "drugs",
                 component: lazy(() => import("@/pages/drugs")),
                 childs: [
@@ -66,7 +66,7 @@ const routes = [
                 ],
             },
             {
-                title: "Quản lý nhóm dịch vụ",
+                title: "Danh mục nhóm dịch vụ",
                 path: "category",
                 component: lazy(() => import("@/pages/category")),
                 childs: [
@@ -89,7 +89,7 @@ const routes = [
                 ],
             },
             {
-                title: "Quản lý đơn vị hành chính",
+                title: "Danh mục đơn vị hành chính",
                 path: "administrative",
                 component: lazy(() => import("@/pages/administrative")),
                 childs: [
@@ -113,7 +113,7 @@ const routes = [
             },
            
             {
-                title: "Quản lý kho dược",
+                title: "Danh mục kho dược",
                 path: "warehouse",
                 component: lazy(() => import("@/pages/warehouse")),
                 childs: [
@@ -137,7 +137,7 @@ const routes = [
             },
 
             {
-                title: "Quản lý nhà cung cấp",
+                title: "Danh mục nhà cung cấp",
                 path: "supplier",
                 component: lazy(() => import("@/pages/supplier")),
                 childs: [
@@ -160,7 +160,7 @@ const routes = [
                 ],
             },
             {
-                title: "Quản lý phòng ban",
+                title: "Danh mục phòng ban",
                 path: "department",
                 component: lazy(() => import("@/pages/department")),
                 childs: [
@@ -185,7 +185,7 @@ const routes = [
 
 
             {
-                title: "Quản lý nhân viên",
+                title: "Danh mục nhân viên",
                 path: "employe",
                 component: lazy(() => import("@/pages/employe")),
                 childs: [
@@ -209,7 +209,7 @@ const routes = [
             },
 
             {
-                title: "Quản lý người dùng",
+                title: "Quản lý tài khoản",
                 path: "user",
                 component: lazy(() => import("@/pages/user")),
                 childs: [
@@ -320,7 +320,7 @@ const routes = [
         path: "",
         childs: [
             {
-                title: "Quản lý kho thuốc",
+                title: "Danh mục kho thuốc",
                 path: "warehouse_drug",
                 component: lazy(() => import("@/pages/warehouse_drug")),
                 childs: [

@@ -76,6 +76,11 @@ const UserPage = ({ ...props }) => {
                     dataSource={users.items}
                     columns={[
                         {
+                            title: "STT",
+                            dataIndex: "id",
+    
+                        },
+                        {
                             title: "Tài khoản",
                             dataIndex: "username",
     
@@ -160,6 +165,7 @@ const UserPage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
+                    footer={() => `Tổng số danh mục ${users.items.length}`}
                 ></Table>
             </Card>
             <ResetPass

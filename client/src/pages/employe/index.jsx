@@ -75,6 +75,11 @@ const EmployePage = ({ ...props }) => {
                     dataSource={users.items}
                     columns={[
                         {
+                            title: "STT",
+                            dataIndex: "id",
+    
+                        },
+                        {
                             title: "Tên nhân vien",
                             dataIndex: "name",
     
@@ -165,6 +170,7 @@ const EmployePage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
+                    footer={() => `Tổng số danh mục ${users.items.length}`}
                 ></Table>
             </Card>
         </div>

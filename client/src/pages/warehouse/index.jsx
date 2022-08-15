@@ -207,7 +207,7 @@ const WareHousePage = ({ ...props }) => {
                         },
                     ]}
                     loading={loading}
-                    footer={() => `Tổng số danh mục 10`}
+                    footer={() => `Tổng số danh mục ${warehouse.items.length}`}
                     onChange={handleTableChange}
                 ></Table>
             </Card>
