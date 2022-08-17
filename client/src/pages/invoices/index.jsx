@@ -122,7 +122,7 @@ const InvoicesPage = ({ ...props }) => {
     return (
         <div>
             <PageHeader
-                title={"Danh mục hóa đơn dịch vụ"}
+                title={"Danh sách hóa đơn dịch vụ"}
             // extra={
             //     !canCreate && (
             //         <Button
@@ -270,20 +270,7 @@ const InvoicesPage = ({ ...props }) => {
 
 
                                             )}
-                                            {!canEdit && (
-                                                <Popconfirm
-                                                    title="Bạn chắc chắn hủy đơn chứ?"
-                                                    onConfirm={() =>
-                                                        invoicecancel(record.id)
-                                                    }
-                                                >
-                                                    <Button
-                                                        type="secondary" size="small">
-                                                        Hủy đơn
-                                                    </Button>
-
-                                                </Popconfirm>
-                                            )}
+                                           
                                         </Space>
                                     )}
                                 </div>
@@ -303,7 +290,7 @@ const InvoicesPage = ({ ...props }) => {
                 visible &&
                 (
                     <ModalForm
-                        title={action === "add" ? "Hóa đơn" : "Sửa Lớp học"}
+                        title={action === "add" ? "Hóa đơn" : "Hóa đơn"}
                         width={1000}
                         visible={visible}
                         onCancel={() => {

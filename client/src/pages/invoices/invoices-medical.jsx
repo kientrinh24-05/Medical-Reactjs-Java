@@ -296,12 +296,16 @@ import { formatMoney } from "../../utils/helper";
     const handleChangeType = (valueChanged) => {
       setValueType(valueChanged.target.value);
     }
-  
+
+
+
+    const handleComplete = (id) => {
+      invoicecomplete(idEdit);
+    }
   
   
     const onSave = async () => {
-
-      invoicecomplete(idEdit);
+  
 
       setTimeout(() => {
         handleClose();
@@ -446,11 +450,14 @@ import { formatMoney } from "../../utils/helper";
                          )}
                             
                        </Col>
-                       <h2 className="font-bold text-warning">  Tổng cộng  { formatMoney(totalAmount ? totalAmount : "10000") + ' VNĐ'}</h2> 
+                      
                      </Row>
+
        
                     
                    </Card>
+
+                   <h2 className="font-bold text-warning mt-4">  Tổng cộng  { formatMoney(totalAmount ? totalAmount : "10000") + ' VNĐ'}</h2> 
                       </>
                     
                     )
@@ -466,6 +473,7 @@ import { formatMoney } from "../../utils/helper";
                     type="primary"
                     className="bg-slate-600 text-white"
                     htmlType="submit"
+                    onClick={() => handleComplete(idEdit)}
                   >
                     Xác nhận
                   </Button>

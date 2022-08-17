@@ -85,7 +85,8 @@ const CreateRole = ({ }) => {
 
   const [subjects, setSubjects] = useState([
     { name: "Thu phí", code: 1 },
-    { name: "Miễn phí", code: 2 }
+    { name: "Miễn phí", code: 2 },
+    { name: "BHYT", code: 3 },
   ]);
 
   const [lines, setLines] = useState([
@@ -159,6 +160,14 @@ const CreateRole = ({ }) => {
   const [details, setDetails] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const setValueSubject = (value) => {
+    if (value === 3 ) { 
+      setCheckedBYHT(true);
+    }else {
+      setCheckedBYHT(false);
+    }
+  }
+
 
   useEffect(() => {
     const total = details.reduce((item1, item2) => {
@@ -171,6 +180,8 @@ const CreateRole = ({ }) => {
     const totalMount = details.map(item => {
       console.log(item);
     })
+
+
 
     console.log(totalMount);
   }, [details])
@@ -219,9 +230,11 @@ const CreateRole = ({ }) => {
     setcardNumber(newDataPatient.cardNumber);
     setcodepatient(newDataPatient.code);
     console.log(newDataPatient);
-  }
+  } 
 
-  console.log('numberPatient: ', numberPatient);
+
+
+  console.log('numberPatient: ', subject);
 
   const loadDataPatient = async () => {
     setLoading(true);
@@ -246,6 +259,7 @@ const CreateRole = ({ }) => {
   const isEdit = !!id;
 
   const [saveLoading, setSaveLoading] = useState(false);
+  const [checkedBHYT, setCheckedBYHT] = useState(false);
   const [detailsDrugs, setdetailsDrugs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [quantityDrugs, setquantityDrugs] = useState(1);
@@ -299,7 +313,7 @@ const CreateRole = ({ }) => {
     { label: 'Nơi khác đến', value: 3 },
   ];
 
-  const [valueType, setValueType] = useState(1);
+  const [valueType, setValueType] = useState(0);
 
   const handleChangeType = (valueChanged) => {
     setValueType(valueChanged.target.value);
@@ -380,7 +394,7 @@ const CreateRole = ({ }) => {
   return (
     <div>
       <PageHeader
-        title={isEdit ? "Cập nhật khám chữa bệnh" : "Thêm mới dịch vụ khám chữa bệnh"}
+        title={isEdit ? "Khám bệnh " : "Khám bệnh "}
         onBack={() => navigate("/medical_examination")}
       />
 
@@ -419,7 +433,7 @@ const CreateRole = ({ }) => {
                         showSearch
                         style={{ width: 200 }}
                         optionFilterProp="children"
-                        onChange={(value) => setSubject(value)}
+                        onChange={(value) => setValueSubject(value)}
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
@@ -441,7 +455,7 @@ const CreateRole = ({ }) => {
                       label="Số thẻ BHYT"
                       rules={[
                         {
-                          required: false,
+                          required: checkedBHYT,
                           message: "Vui lòng nhập nội dung",
                         },
                       ]}
@@ -459,7 +473,7 @@ const CreateRole = ({ }) => {
                           label="Ngày bắt đầu"
                           rules={[
                             {
-                              required: true,
+                              required: checkedBHYT,
                               message: "Vui lòng nhập nội dung",
                             },
                           ]}
@@ -474,12 +488,6 @@ const CreateRole = ({ }) => {
                         <Form.Item
                           name="fromDate"
                           label="Ngày bắt đầu"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Vui lòng nhập nội dung",
-                            },
-                          ]}
                         >
                           <Input />
                         </Form.Item>
@@ -496,7 +504,7 @@ const CreateRole = ({ }) => {
                           label="Ngày kết thúc"
                           rules={[
                             {
-                              required: true,
+                              required: checkedBHYT,
                               message: "Vui lòng nhập nội dung",
                             },
                           ]}
@@ -511,12 +519,6 @@ const CreateRole = ({ }) => {
                         <Form.Item
                           name="toDate"
                           label="Ngày kết thúc"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Vui lòng nhập nội dung",
-                            },
-                          ]}
                         >
                           <Input />
                         </Form.Item>

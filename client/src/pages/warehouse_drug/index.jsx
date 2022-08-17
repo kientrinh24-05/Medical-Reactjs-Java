@@ -20,6 +20,7 @@ import { useRecoilValue } from "recoil";
 import { warehousedrugAtom } from "@/_state";
 import { useWareHouseDrugActions } from "@/_actions";
 import { useDebounce } from "@/lib/hook";
+import axios from "axios";
 
 export const convertTypeToInt = (applyFor) => {
     switch (applyFor) {
@@ -45,6 +46,7 @@ const WareHouseDrug = ({ ...props }) => {
     const [dataItemsWareHouse, setDataItemsWareHouse] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingRow, setLoadingRow] = useState(null);
+    const [dataWarerHouse, setdataWarerHouse] = useState([]);
     const deparment = useRecoilValue(warehousedrugAtom);
 
     const [filter, setFilter] = useState();
@@ -73,24 +75,47 @@ const WareHouseDrug = ({ ...props }) => {
 
     const loadData = async () => {
         setLoading(true);
+        console.log(Idwarehouse);
+
         await actions.getList({
             pageNumber: 1,
-            pageSize: 1000
-        });
+            pageSize: 1000,
+        })
 
         setLoading(false);
     };
 
+    const getListProduct = async () => {
+
+        let pageNumber = 1;
+        let pageSize = 1000;
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:8081/api/v1/warehouse_drugs/warehouse_get_list_paging_sort_search_filter',
+            headers: {},
+            data: {
+                pageNumber, pageSize
+            }
+        }).then(res => {
+            setdataWarerHouse(res.data.data.content);
+        });;
+
+    }
+
     const loadDataWareHouse = async (id) => {
+        console.log(id);
         setIdwarehouse(id);
-        await actions.getListDetail(Idwarehouse).then(data => {
-            deparment.items = data.data.data.content;
+        await actions.getList({
+            pageNumber: 1,
+            pageSize: 1000,
+            warehouseId: id,
         });
-          
-      }
+    }
 
     useEffect(() => {
         loadData();
+        getListProduct();
     }, [filter]);
 
     useEffect(() => {
@@ -120,21 +145,24 @@ const WareHouseDrug = ({ ...props }) => {
             />
             <Col className="mb-3" md={10}>
                 <label className="mr-3 font-bold"> Vui lòng chọn kho </label>
-                    <Select
-                        showSearch
-                        style={{ width: 200 }}
-                        optionFilterProp="children"
-                        onChange={(value) => loadDataWareHouse(value)}
-                        filterOption={(input, option) =>
-                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
-                    >
-                        {deparment.items.map((item) => (
-                            <Option key={item.id} value={item.id}>
-                                {item.wareHouse.name}
-                            </Option>
-                        ))}
-                    </Select>
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    optionFilterProp="children"
+                    onChange={(value) => loadDataWareHouse(value)}
+                    filterOption={(input, option) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                >
+                    <Option value={null}>
+                        Tất cả..
+                    </Option>
+                    {dataWarerHouse.map((item) => (
+                        <Option key={item.id} value={item.id}>
+                            {item.wareHouse.name}
+                        </Option>
+                    ))}
+                </Select>
             </Col>
             <Card>
                 <Table
@@ -178,7 +206,7 @@ const WareHouseDrug = ({ ...props }) => {
                     onChange={handleTableChange}
                 ></Table>
 
-            
+
             </Card>
             {showCreate && (
                 <CreateRole show onClose={() => setShowCreate(false)} />

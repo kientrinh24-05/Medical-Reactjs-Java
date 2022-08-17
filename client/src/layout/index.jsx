@@ -83,10 +83,15 @@ const DashBoard = ({ children }) => {
                 collapsed={appContext.collapsed}
             >
                 <div className=" bg-slate-700 h-16 flex items-center text-center">
-                    <img
+                    
+
+                    <span className="text-logo">
+                        YTCS 
+                    </span>
+                    {/* <img
                         className="inline-block mx-auto"
                         src={appContext.collapsed ? logoMini : logo}
-                    />
+                    /> */}
                 </div>
                 <Menu
                     theme="light"

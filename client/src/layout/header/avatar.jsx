@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { accountAtom } from "@/_state";
 import { useRecoilValue } from "recoil";
 import { useUserActions } from "@/_actions";
+import logo from "@/assets/images/avthieu.png";
 import ResetPass from "@/pages/user/reset-pass";
 
 const AvatarDropdown = ({ menu }) => {
@@ -51,8 +52,8 @@ const AvatarDropdown = ({ menu }) => {
                 <div className="flex items-center gap-2">
                     <Avatar
                         size={50}
-                        src={account.avatar}
-                        icon={<UserOutlined />}
+                        src={logo}
+                    
                         alt="avatar"
                     />
                     <div className="flex flex-col">
